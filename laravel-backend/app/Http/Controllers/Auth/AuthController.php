@@ -56,7 +56,10 @@ class AuthController extends Controller
     {
         $refreshedToken = $this->authService->refreshToken();
         
-        return response()->json($refreshedToken);
+        return response()->json([
+            'token' => $refreshedToken,
+            'message' => 'Token Refreshed Successfully'
+        ],200);
     }
 
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace app\Servies;
+namespace App\Services;
 
 use App\Contracts\AuthServiceInterface;
 use App\Models\User;
@@ -49,7 +49,8 @@ class AuthService implements AuthServiceInterface
 
     public function refreshToken(){
 
-        JWTAuth::refresh(JWTAuth::getToken());
+        $newToken = JWTAuth::refresh(JWTAuth::getToken());
+        return $this->formatTokenResponse($newToken);
 
     }
 
