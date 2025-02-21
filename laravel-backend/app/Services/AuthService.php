@@ -49,7 +49,8 @@ class AuthService implements AuthServiceInterface
 
     public function refreshToken(){
 
-        JWTAuth::refresh(JWTAuth::getToken());
+        $newToken = JWTAuth::refresh(JWTAuth::getToken());
+        return $this->formatTokenResponse($newToken);
 
     }
 
