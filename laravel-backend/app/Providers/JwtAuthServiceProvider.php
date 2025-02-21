@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use App\Contracts\AuthServiceInterface;
-use app\Servies\AuthService;
+use App\Services\AuthService;
 use Illuminate\Support\ServiceProvider;
 
 class JwtAuthServiceProvider extends ServiceProvider
