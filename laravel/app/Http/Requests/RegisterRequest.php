@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Validation\ValidationException;
 
 class RegisterRequest extends FormRequest
 {
@@ -27,6 +29,23 @@ class RegisterRequest extends FormRequest
             'email' =>'required|string|email|unique:users',
             'password' =>'required|string|min:2|confirmed',
             'profile_picture' =>'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'role' =>'required|string|in:admin,instructor,student'
         ];
+    }
+
+    protected function failedValidation(Validator $validator){
+        $errors = $validator->errors();
+        foreach($errors->keys() as $key){
+            if($this->has($key) && $this->get($key)===["The $key field is required."]){
+                $errors->forget($key);
+            }
+        }
+
+        throw new ValidationException($validator , response()->json([
+            'is_success' => false,
+            'message' => 'Validation failed',
+            'details' => 'Validation failed for one or more fields',
+            'errors' => $errors
+        ], 422));
     }
 }

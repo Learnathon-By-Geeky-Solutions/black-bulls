@@ -22,11 +22,15 @@ class AuthController extends Controller
         $data = $request->validated();
         $response = $this->authService->register($data);
 
-        return response()->json([
-            'user'=>$response['user'],
-            'token'=>$response['token'],
-            'message'=>'Registration Successful'
-        ],201);
+        $responseData = [
+            'is_success' => $response['is_success'],
+            'message' => $response['message'],
+            'details' => $response['details'],
+            'user' => $response['is_success'] ? $response['user'] : null,
+            'token' => $response['is_success'] ? $response['token'] : null
+        ];
+
+        return response()->json($responseData, $response['status']);
     }
 
     public function login(LoginRequest $request)

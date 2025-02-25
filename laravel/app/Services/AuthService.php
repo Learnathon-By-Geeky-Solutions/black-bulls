@@ -8,29 +8,65 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Support\Facades\DB;
 
 class AuthService implements AuthServiceInterface
 {
-    public function register(array $data){
+    public function register(array $data)
+    {
+        try{
+            if ($data['role'] == 'admin' && (!Auth::check() || !Auth::user()->hasRole('admin'))) {
+                return [
+                    'is_success' => false,
+                    'message' => 'Unauthorized',
+                    'details' => 'Only admin can create admin',
+                    'status' => 403
+                ];
+            }
 
-        $user = new User();
-        $user->name = $data['name'];
-        $user->phone = $data['phone'];
-        $user->email = $data['email'];
-        $user->password = Hash::make($data['password']);
-        $user->phone = $data['phone'];
+            DB::beginTransaction();
 
-        if(isset($data['profile_picture'])){
-            $picture = $data['profile_picture'];
-            $pictureName = time(). '.' . $picture->getClientOriginalExtension();
-            Storage::disk('profile_pictures')->put($pictureName,file_get_contents($picture));
-            $user->profile_picture = $pictureName;
+            $user = new User();
+            $user->name = $data['name'];
+            $user->phone = $data['phone'];
+            $user->email = $data['email'];
+            $user->password = Hash::make($data['password']);
+    
+            if (isset($data['profile_picture'])) {
+                $picture = $data['profile_picture'];
+                $pictureName = time() . '.' . $picture->getClientOriginalExtension();
+                Storage::disk('profile_pictures')->put($pictureName, file_get_contents($picture));
+                $user->profile_picture = $pictureName;
+            }
+    
+            $user->save();
+            $user->assignRole($data['role']);
+    
+            $token = JWTAuth::fromUser($user);
+
+            DB::commit();
+            
+            return [
+                'is_success' => true,
+                'message' => 'User created successfully',
+                'details' => 'User created successfully',
+                'user' => $user,
+                'token' => $this->formatTokenResponse($token),
+                'status' => 201,
+            ];
         }
+        catch(\Exception $e){
+            DB::rollBack();
+            \Log::error('Registration Error: '.$e->getMessage());
 
-        $user->save();
-
-        $token = JWTAuth::fromUser($user);
-        return ['user' =>$user, 'token'=> $this->formatTokenResponse($token)];
+            return [
+                'is_success' => false,
+                'message' => 'User creation failed',
+                'details' => $e->getMessage(),
+                'status' => 500
+            ];
+        }
     }
 
     public function login(array $credentials){
