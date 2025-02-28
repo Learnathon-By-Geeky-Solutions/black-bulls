@@ -35,9 +35,8 @@ class AuthService implements AuthServiceInterface
     
             if (isset($data['profile_picture'])) {
                 $picture = $data['profile_picture'];
-                $pictureName = time() . '.' . $picture->getClientOriginalExtension();
-                Storage::disk('profile_pictures')->put($pictureName, file_get_contents($picture));
-                $user->profile_picture = $pictureName;
+                $picturePath = $picture->store('images/profile_pictures', 'public');
+                $user->profile_picture = $picturePath;
             }
     
             $user->save();
