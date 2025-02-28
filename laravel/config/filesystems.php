@@ -56,13 +56,6 @@ return [
             'throw' => false,
         ],
 
-        'profile_pictures' =>[
-            'driver' => 'local',
-            'root' => public_path('user/profilePicture'),
-            'url' =>env('APP_URL').'/user/profilePicture',
-            'visibility' => 'public'
-        ]
-
     ],
 
     /*
