@@ -36,16 +36,17 @@ class AuthController extends Controller
     public function login(LoginRequest $request)
     {
         $credentials = $request->validated();
-        $token = $this->authService->login($credentials);
+        $response = $this->authService->login($credentials);
 
-        if(!$token){
-            return response()->json(['message'=>'Invalid Credentials'],401);
-        }
+        $responseData = [
+            'is_success' => $response['is_success'],
+            'message' => $response['message'],
+            'details' =>$response['details'],
+            'token' => $response['is_success'] ? $response['token'] : null
+        ];
 
-        return response()->json([
-            'token'=>$token,
-            'message'=>'Login Successful'
-        ],201);
+        return response()->json($responseData, $response['status']);
+        
     }
 
     public function logout()
