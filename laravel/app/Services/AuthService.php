@@ -69,11 +69,34 @@ class AuthService implements AuthServiceInterface
     }
 
     public function login(array $credentials){
-        
-        if(!$token = JWTAuth::attempt($credentials)){
-            return null;
+        try{
+            if(!$token = JWTAuth::attempt($credentials)){
+                return [
+                    'is_success' => false,
+                    'message' => 'Invalid email or password',
+                    'details' => 'Invalid email or password',
+                    'status' => 401
+                ];
+            }
+
+            return [
+                'is_success' => true,
+                'message' => 'Login successful',
+                'details' => 'Login successful',
+                'token' => $this->formatTokenResponse($token),
+                'status' => 200
+            ];
         }
-        return $this->formatTokenResponse($token);
+        catch(\Exception $e){
+            \Log::error('Login Error: '.$e->getMessage());
+
+            return [
+                'is_success' => false,
+                'message' => 'Login failed',
+                'details' => $e->getMessage(),
+                'status' => 500
+            ];
+        }
     }
 
     public function logout(){
