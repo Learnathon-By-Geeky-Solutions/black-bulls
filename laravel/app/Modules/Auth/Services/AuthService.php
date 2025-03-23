@@ -1,22 +1,24 @@
 <?php
 
-namespace App\Services;
+namespace App\Modules\Auth\Services;
 
-use App\Contracts\AuthServiceInterface;
-use App\Models\User;
+use App\Modules\Auth\Contracts\AuthServiceInterface;
+use App\Modules\Auth\Repositories\Interfaces\AuthRepositoryInterface;
+use App\Modules\Auth\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class AuthService implements AuthServiceInterface
 {
     public function register(array $data)
     {
         try{
-            if ($data['role'] == 'admin' && (!Auth::check() || !Auth::user()->hasRole('admin'))) {
+            if ($data['role'] == 'admin' && (!Auth::check() || !Auth::user()->role != 'admin')) {
                 return [
                     'is_success' => false,
                     'message' => 'Unauthorized',
@@ -57,7 +59,6 @@ class AuthService implements AuthServiceInterface
         }
         catch(\Exception $e){
             DB::rollBack();
-            \Log::error('Registration Error: '.$e->getMessage());
 
             return [
                 'is_success' => false,
@@ -88,7 +89,7 @@ class AuthService implements AuthServiceInterface
             ];
         }
         catch(\Exception $e){
-            \Log::error('Login Error: '.$e->getMessage());
+            Log::error('Login Error: '.$e->getMessage());
 
             return [
                 'is_success' => false,
@@ -100,20 +101,16 @@ class AuthService implements AuthServiceInterface
     }
 
     public function logout(){
-
         JWTAuth::invalidate(JWTAuth::getToken());
         return true;
     }
 
     public function refreshToken(){
-
         $newToken = JWTAuth::refresh(JWTAuth::getToken());
         return $this->formatTokenResponse($newToken);
-
     }
 
     public function formatTokenResponse($token){
-
         return [
             'access_token' => $token,
             'token_type' =>'bearer',

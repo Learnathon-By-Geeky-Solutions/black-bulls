@@ -168,7 +168,10 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        App\Providers\JwtAuthServiceProvider::class
+        App\Modules\Auth\Providers\JwtAuthServiceProvider::class,
+        App\Modules\Common\Providers\RepositoryServiceProvider::class,
+        App\Modules\Common\Providers\ModuleRouteServiceProvider::class,
+        App\Modules\Common\Providers\ModuleDatabaseServiceProvider::class,
     ])->toArray(),
 
     /*

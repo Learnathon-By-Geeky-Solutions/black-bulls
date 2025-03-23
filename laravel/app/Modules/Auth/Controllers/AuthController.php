@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Modules\Auth\Controllers;
 
-use App\Contracts\AuthServiceInterface;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\LoginRequest;
-use App\Http\Requests\RegisterRequest;
+use App\Modules\Auth\Contracts\AuthServiceInterface;
+use App\Modules\Auth\Requests\LoginRequest;
+use App\Modules\Auth\Requests\RegisterRequest;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
@@ -46,25 +46,20 @@ class AuthController extends Controller
         ];
 
         return response()->json($responseData, $response['status']);
-        
     }
 
     public function logout()
     {
         $this->authService->logout();
-
         return response()->json(['message' => 'Successfully logged out']);
-
     }
 
     public function refreshToken()
     {
         $refreshedToken = $this->authService->refreshToken();
-        
         return response()->json([
             'token' => $refreshedToken,
             'message' => 'Token Refreshed Successfully'
         ],200);
     }
-
 }
