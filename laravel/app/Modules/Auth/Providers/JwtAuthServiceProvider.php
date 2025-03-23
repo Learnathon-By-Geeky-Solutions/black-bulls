@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Providers;
+namespace App\Modules\Auth\Providers;
 
-use App\Contracts\AuthServiceInterface;
-use App\Services\AuthService;
+use App\Modules\Auth\Contracts\AuthServiceInterface;
+use App\Modules\Auth\Services\AuthService;
 use Illuminate\Support\ServiceProvider;
 
 class JwtAuthServiceProvider extends ServiceProvider
@@ -13,7 +13,7 @@ class JwtAuthServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(AuthServiceInterface::class,AuthService::class);
+        $this->app->bind(AuthServiceInterface::class, AuthService::class);
     }
 
     /**

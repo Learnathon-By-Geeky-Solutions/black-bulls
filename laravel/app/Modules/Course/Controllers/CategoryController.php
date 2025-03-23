@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\CourseManagement;
+namespace App\Modules\Course\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\CourseManagement\Category;
+use App\Modules\Course\Models\Category;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class CategoryController extends Controller
 {
@@ -67,14 +68,20 @@ class CategoryController extends Controller
     }
 
     public function update(Request $request, $id){
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
-        ]);
-
         try {
             $category = Category::findOrFail($id);
+            $data = $request->only(['name', 'description']);
+
+            if (empty($data)) {
+                return response()->json([
+                    'is_success' => false,
+                    'error' => 'No data provided for update'
+                ], 400);
+            }
+
             $category->update($data);
+            $category->refresh();
+                        
             return response()->json([
                 'is_success' => true,
                 'data' => $category
@@ -98,7 +105,7 @@ class CategoryController extends Controller
             $category->delete();
             return response()->json([
                 'is_success' => true,
-                'data' => $category
+                'message' => 'Category deleted successfully'
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([

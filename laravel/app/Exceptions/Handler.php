@@ -6,6 +6,7 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 use Spatie\Permission\Exceptions\UnauthorizedException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class Handler extends ExceptionHandler
 {
@@ -44,6 +45,20 @@ class Handler extends ExceptionHandler
                 'is_sucess' => false,
                 'message' => 'Unauthorized: You do not have permission to access this resource'
             ], 401);
+        }
+
+        if($exception instanceof ModelNotFoundException){
+            return response()->json([
+                'is_success' => false,
+                'message' => 'Resource not found'
+            ], 404);
+        }
+
+        if($exception instanceof \InvalidArgumentException){
+            return response()->json([
+                'is_success' => false,
+                'message' => $exception->getMessage()
+            ], 400);
         }
 
         return parent::render($request, $exception);
