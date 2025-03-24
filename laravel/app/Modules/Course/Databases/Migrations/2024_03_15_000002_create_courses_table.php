@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('slug')->unique();
             $table->longText('description')->nullable();
             $table->string('thumbnail')->nullable();
             $table->decimal('price', 10, 2)->default(0.00);
@@ -27,7 +26,6 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index('slug');
             $table->index('is_published');
             $table->index('is_featured');
             $table->index('is_approved');
