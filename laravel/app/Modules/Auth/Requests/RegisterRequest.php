@@ -40,4 +40,4 @@ class RegisterRequest extends FormRequest
             'errors' => $errors
         ], 422));
     }
-} 
+}

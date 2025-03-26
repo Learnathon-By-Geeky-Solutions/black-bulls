@@ -3,9 +3,11 @@
 namespace App\Modules\Course\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Modules\Course\Requests\CourseRequest;
+use App\Modules\Course\Requests\CreateCourseRequest;
+use App\Modules\Course\Requests\UpdateCourseRequest;
 use App\Modules\Course\Services\CourseService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class CourseController extends Controller
 {
@@ -18,32 +20,36 @@ class CourseController extends Controller
 
     public function getAll(): JsonResponse
     {
-        $courses = $this->courseService->getAll();
+        $response = $this->courseService->getAll();
         return response()->json([
-            'is_success' => true,
-            'data' => $courses
-        ]);
+            'is_success' => $response['is_success'],
+            'message' => $response['message'],
+            'data' => $response['data']
+        ], $response['status']);
     }
 
     public function getById(int $id): JsonResponse
     {
-        $course = $this->courseService->getById($id);
+        $response = $this->courseService->getById($id);
         return response()->json([
-            'is_success' => true,
-            'data' => $course
-        ]);
+            'is_success' => $response['is_success'],
+            'message' => $response['message'],
+            'data' => $response['data']
+        ], $response['status']);
     }
 
-    public function create(CourseRequest $request): JsonResponse
+    public function create(CreateCourseRequest $request): JsonResponse
     {
-        $course = $this->courseService->create($request->validated());
+        $response = $this->courseService->create($request->validated());
+        
         return response()->json([
-            'is_success' => true,
-            'data' => $course
-        ], 201);
+            'is_success' => $response['is_success'],
+            'message' => $response['message'],
+            'data' => $response['data']
+        ], $response['status']);
     }
 
-    public function update(CourseRequest $request, int $id): JsonResponse
+    public function update(UpdateCourseRequest $request, int $id): JsonResponse
     {
         $course = $this->courseService->update($id, $request->validated());
         return response()->json([
