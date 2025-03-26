@@ -42,7 +42,7 @@ class Handler extends ExceptionHandler
 
         if($exception instanceof UnauthorizedException){
             return response()->json([
-                'is_sucess' => false,
+                'is_success' => false,
                 'message' => 'Unauthorized: You do not have permission to access this resource'
             ], 401);
         }
@@ -57,10 +57,16 @@ class Handler extends ExceptionHandler
         if($exception instanceof \InvalidArgumentException){
             return response()->json([
                 'is_success' => false,
-                'message' => $exception->getMessage()
+                'message' => 'Invalid argument: ' . $exception->getMessage()
             ], 400);
         }
-
+        
+        if ($exception instanceof \Exception) {
+            return response()->json(['is_success' => false,
+            'message' => $exception->getMessage(),
+            'trace' => $exception->getTrace(),
+            ], 500);
+        }
         return parent::render($request, $exception);
     }
 }

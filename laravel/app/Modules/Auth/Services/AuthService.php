@@ -4,7 +4,7 @@ namespace App\Modules\Auth\Services;
 
 use App\Modules\Auth\Contracts\AuthServiceInterface;
 use App\Modules\Auth\Repositories\Interfaces\AuthRepositoryInterface;
-use App\Modules\Auth\Models\User;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;

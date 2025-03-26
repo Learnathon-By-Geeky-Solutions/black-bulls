@@ -8,6 +8,8 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Exception;
 
 class CourseService
 {
@@ -18,35 +20,119 @@ class CourseService
         $this->courseRepository = app()->make(RepositoryInterface::class, ['model'=> new Course()]);
     }
 
-    public function getAll(): LengthAwarePaginator
+    public function getAll(): array
     {
-        return $this->courseRepository->getAll();
+            $courses = $this->courseRepository->getAll();
+            
+            return [
+                'is_success' => true,
+                'message' => 'Courses retrieved successfully',
+                'data' => $courses,
+                'status' => 200
+            ];
     }
 
-    public function getById(int $id): Model
+    public function create(array $data): array
     {
-        return $this->courseRepository->getById($id);
+        try {
+            DB::beginTransaction();
+            
+            $data['instructor_id'] = Auth::id();
+            $course = $this->courseRepository->create($data);
+            
+            DB::commit();
+
+            return [
+                'is_success' => true,
+                'message' => 'Course created successfully',
+                'data' => $course,
+                'status' => 201
+            ];
+        } catch (Exception $e) {
+            DB::rollBack();
+            
+            return [
+                'is_success' => false,
+                'message' => 'Failed to create course: ' . $e->getMessage(),
+                'data' => null,
+                'status' => 500
+            ];
+        }
     }
 
-    public function create(array $data): Model
+    public function getById(int $id): array
     {
-        $data['user_id'] = Auth::id();
-        return $this->courseRepository->create($data);
+        $course = $this->courseRepository->getById($id);
+        
+        return [
+            'is_success' => true,
+            'message' => 'Course retrieved successfully',
+            'data' => $course,
+            'status' => 200
+        ];
+
     }
 
-    public function update(int $id, array $data): Model
+    public function update(int $id, array $data): array
     {
-        return $this->courseRepository->update($id, $data);
+        try {
+            DB::beginTransaction();
+            
+            $course = $this->courseRepository->update($id, $data);
+            
+            DB::commit();
+
+            return [
+                'message' => 'Course updated successfully',
+                'data' => $course
+            ];
+        } catch (Exception $e) {
+            DB::rollBack();
+            
+            return [
+                'is_success' => false,
+                'message' => 'Failed to update course: ' . $e->getMessage()
+            ];
+        }
     }
 
-    public function delete(int $id): bool
+    public function delete(int $id): array
     {
-        return $this->courseRepository->delete($id);
+        try {
+            DB::beginTransaction();
+            
+            $this->courseRepository->delete($id);
+            
+            DB::commit();
+
+            return [
+                'message' => 'Course deleted successfully'
+            ];
+        } catch (Exception $e) {
+            DB::rollBack();
+            
+            return [
+                'is_success' => false,
+                'message' => 'Failed to delete course: ' . $e->getMessage()
+            ];
+        }
     }
 
-    public function getUserCourses(): Collection
+    public function getUserCourses(): array
     {
-        $userId = Auth::id();
-        return $this->courseRepository->getByIdWithParameters($userId);
+        try {
+            $userId = Auth::id();
+            $courses = $this->courseRepository->getByIdWithParameters($userId);
+            
+            return [
+                'message' => 'User courses retrieved successfully',
+                'data' => $courses
+            ];
+        } catch (Exception $e) {
+            return [
+                'is_success' => false,
+                'message' => 'Failed to retrieve user courses: ' . $e->getMessage()
+            ];
+        }
     }
 }

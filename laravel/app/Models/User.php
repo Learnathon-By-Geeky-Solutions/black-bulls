@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Auth\Models;
+namespace App\Models;
 
 use App\Modules\Course\Models\Course;
 use App\Modules\Course\Models\CourseEnrollment;
@@ -69,7 +69,10 @@ class User extends Authenticatable implements JWTSubject
      */
     public function getJWTCustomClaims()
     {
-        return [];
+        return [
+            'roles' => $this->roles->pluck('name'),
+            'permissions' => $this->getAllPermissions()->pluck('name')
+        ];
     }
 
     // Course Relationships

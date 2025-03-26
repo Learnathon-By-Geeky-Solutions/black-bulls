@@ -172,6 +172,7 @@ return [
         App\Modules\Common\Providers\RepositoryServiceProvider::class,
         App\Modules\Common\Providers\ModuleRouteServiceProvider::class,
         App\Modules\Common\Providers\ModuleDatabaseServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
     ])->toArray(),
 
     /*
