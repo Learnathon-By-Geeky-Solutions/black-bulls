@@ -8,6 +8,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use App\Modules\Content\Models\Mcq;
+use App\Modules\Content\Models\Transcript;
+use App\Modules\Progress\Models\ProgressTracking;
+use App\Modules\Content\Models\Video;
+use App\Modules\Progress\Models\AnalyticsTracking;
 
 class Chapter extends Model
 {

@@ -1,32 +1,34 @@
 <?php
 
-namespace App\Modules\Course\Models;
+namespace App\Modules\Content\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-class Transcript extends Model
+class Video extends Model
 {
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'transcriptable_type',
-        'transcriptable_id',
+        'videoable_type',
+        'videoable_id',
         'title',
-        'content',
-        'timestamps',
+        'description',
+        'url',
+        'thumbnail',
+        'duration',
         'is_published',
     ];
 
     protected $casts = [
-        'timestamps' => 'array',
+        'duration' => 'integer',
         'is_published' => 'boolean',
     ];
 
     // Relationships
-    public function transcriptable(): MorphTo
+    public function videoable(): MorphTo
     {
         return $this->morphTo();
     }

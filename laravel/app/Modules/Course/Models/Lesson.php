@@ -9,6 +9,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use App\Modules\Content\Models\Tutorial;
+use App\Modules\Content\Models\Mcq;
+use App\Modules\Content\Models\Transcript;
+use App\Modules\Progress\Models\ProgressTracking;
+use App\Modules\Content\Models\Video;
+use App\Modules\Progress\Models\AnalyticsTracking;
 
 class Lesson extends Model
 {
