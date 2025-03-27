@@ -18,4 +18,4 @@ class UpdateCourseSectionRequest extends BaseCourseSectionRequest
     {
         return $this->getCommonMessages();
     }
-} 
+}

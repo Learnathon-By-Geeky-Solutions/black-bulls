@@ -33,4 +33,4 @@ abstract class BaseCourseSectionRequest extends FormRequest
             'is_published.boolean' => 'Publication status must be true or false',
         ];
     }
-} 
+}
