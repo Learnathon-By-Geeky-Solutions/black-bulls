@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class Lesson extends Model
 {
@@ -66,4 +67,21 @@ class Lesson extends Model
     {
         return $this->morphMany(AnalyticsTracking::class, 'trackable');
     }
+
+    /**
+     * Get the course through chapter and course section relationship.
+     */
+    public function course(): HasOneThrough
+    {
+        return $this->hasOneThrough(
+            Course::class,
+            Chapter::class,
+            'id', // Foreign key on chapters table
+            'id', // Foreign key on courses table
+            'chapter_id', // Local key on lessons table
+            'course_section_id' // Local key on chapters table
+        )->join('course_sections', 'course_sections.id', '=', 'chapters.course_section_id')
+         ->select('courses.*');
+    }
 }
+
