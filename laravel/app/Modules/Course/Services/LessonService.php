@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 class LessonService
 {
     protected $lessonRepository;
+    private const LESSON_NOT_FOUND = 'Lesson not found';
 
     public function __construct()
     {
@@ -88,7 +89,7 @@ class LessonService
         } catch (ModelNotFoundException $e) {
             return [
                 'is_success' => false,
-                'message' => 'Lesson not found',
+                'message' => self::LESSON_NOT_FOUND,
                 'data' => null,
                 'status' => 404
             ];
@@ -121,7 +122,7 @@ class LessonService
             DB::rollBack();
             return [
                 'is_success' => false,
-                'message' => 'Lesson not found',
+                'message' => self::LESSON_NOT_FOUND,
                 'data' => null,
                 'status' => 404
             ];
@@ -155,7 +156,7 @@ class LessonService
             DB::rollBack();
             return [
                 'is_success' => false,
-                'message' => 'Lesson not found',
+                'message' => self::LESSON_NOT_FOUND,
                 'status' => 404
             ];
         } catch (Exception $e) {
