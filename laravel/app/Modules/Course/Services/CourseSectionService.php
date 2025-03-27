@@ -127,7 +127,7 @@ class CourseSectionService
         try {
             DB::beginTransaction();
             
-            $section = CourseSection::findOrFail($id);
+            CourseSection::findOrFail($id);
             $this->courseSectionRepository->delete($id);
             
             DB::commit();
@@ -186,4 +186,4 @@ class CourseSectionService
             ];
         }
     }
-} 
+}

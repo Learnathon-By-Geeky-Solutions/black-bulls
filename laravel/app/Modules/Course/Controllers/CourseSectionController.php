@@ -76,4 +76,4 @@ class CourseSectionController extends Controller
             'data' => $response['data']
         ], $response['status']);
     }
-} 
+}

@@ -39,4 +39,4 @@ class CreateCourseSectionRequest extends BaseCourseSectionRequest
             'errors' => $validator->errors()
         ], 422));
     }
-} 
+}
