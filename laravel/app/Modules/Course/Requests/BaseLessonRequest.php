@@ -32,4 +32,4 @@ abstract class BaseLessonRequest extends FormRequest
             'errors' => $validator->errors()
         ], 422));
     }
-} 
+}
