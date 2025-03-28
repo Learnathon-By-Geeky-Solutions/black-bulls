@@ -78,7 +78,8 @@ class Repository implements RepositoryInterface
 
     public function delete(int $id): bool
     {
-        return $this->model->destroy($id);
+        $model = $this->getById($id);
+        return $model->destroy($id);
     }
 
     public function bulkDelete(array $ids): int

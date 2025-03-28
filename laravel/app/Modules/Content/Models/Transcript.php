@@ -1,35 +1,32 @@
 <?php
 
-namespace App\Modules\Course\Models;
+namespace App\Modules\Content\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-class Mcq extends Model
+class Transcript extends Model
 {
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'mcqable_type',
-        'mcqable_id',
-        'question',
-        'options',
-        'correct_answer',
-        'explanation',
-        'points',
+        'transcriptable_type',
+        'transcriptable_id',
+        'title',
+        'content',
+        'timestamps',
         'is_published',
     ];
 
     protected $casts = [
-        'options' => 'array',
-        'points' => 'integer',
+        'timestamps' => 'array',
         'is_published' => 'boolean',
     ];
 
     // Relationships
-    public function mcqable(): MorphTo
+    public function transcriptable(): MorphTo
     {
         return $this->morphTo();
     }

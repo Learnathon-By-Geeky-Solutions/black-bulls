@@ -33,6 +33,6 @@ class CourseSection extends Model
 
     public function chapters(): HasMany
     {
-        return $this->hasMany(Chapter::class);
+        return $this->hasMany(Chapter::class, 'course_section_id');
     }
 }

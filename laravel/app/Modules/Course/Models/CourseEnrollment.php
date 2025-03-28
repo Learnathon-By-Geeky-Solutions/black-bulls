@@ -2,7 +2,7 @@
 
 namespace App\Modules\Course\Models;
 
-use App\Modules\Auth\Models\User;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;

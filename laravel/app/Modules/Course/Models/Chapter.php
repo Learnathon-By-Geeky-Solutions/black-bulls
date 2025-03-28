@@ -7,6 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use App\Modules\Content\Models\Mcq;
+use App\Modules\Content\Models\Transcript;
+use App\Modules\Progress\Models\ProgressTracking;
+use App\Modules\Content\Models\Video;
+use App\Modules\Progress\Models\AnalyticsTracking;
 
 class Chapter extends Model
 {
@@ -34,5 +40,35 @@ class Chapter extends Model
     public function lessons(): HasMany
     {
         return $this->hasMany(Lesson::class);
+    }
+
+    public function videos(): MorphMany
+    {
+        return $this->morphMany(Video::class, 'videoable');
+    }
+
+    public function mcqs(): MorphMany
+    {
+        return $this->morphMany(Mcq::class, 'mcqable');
+    }
+
+    public function transcripts(): MorphMany
+    {
+        return $this->morphMany(Transcript::class, 'transcriptable');
+    }
+
+    public function attachments(): MorphMany
+    {
+        return $this->morphMany(CourseAttachment::class, 'attachable');
+    }
+
+    public function progress(): MorphMany
+    {
+        return $this->morphMany(ProgressTracking::class, 'trackable');
+    }
+
+    public function analytics(): MorphMany
+    {
+        return $this->morphMany(AnalyticsTracking::class, 'trackable');
     }
 }

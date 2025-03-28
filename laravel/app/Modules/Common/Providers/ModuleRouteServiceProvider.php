@@ -11,6 +11,8 @@ class ModuleRouteServiceProvider extends ServiceProvider
     protected $modules = [
         'Course',
         'Auth',
+        'Content',
+        'Progress'
         // Add other modules here
     ];
 
