@@ -4,13 +4,15 @@ namespace App\Modules\Content\Requests;
 
 class CreateMcqRequest extends BaseMcqRequest
 {
+    private const REQUIRED_STRING = 'required|string';
+
     public function rules(): array
     {
         return array_merge($this->getCommonRules(), [
-            'question' => 'required|string',
+            'question' => self::REQUIRED_STRING,
             'options' => 'required|array|min:2',
-            'options.*' => 'required|string',
-            'correct_answer' => 'required|string',
+            'options.*' => self::REQUIRED_STRING,
+            'correct_answer' => self::REQUIRED_STRING,
             'explanation' => 'nullable|string',
         ]);
     }
