@@ -2,6 +2,7 @@
 
 use App\Modules\Content\Controllers\VideoController;
 use App\Modules\Content\Controllers\TranscriptController;
+use App\Modules\Content\Controllers\McqController;
 use Illuminate\Support\Facades\Route;
 
 // Video routes for instructors
@@ -23,5 +24,15 @@ Route::middleware(['auth:api', 'role:instructor'])->group(function () {
         Route::put('/{id}', [TranscriptController::class, 'update']);
         Route::delete('/{id}', [TranscriptController::class, 'delete']);
         Route::get('/{type}/{id}', [TranscriptController::class, 'getByTranscriptable']);
+    });
+
+    // MCQ routes for instructors
+    Route::prefix('mcqs')->group(function () {
+        Route::get('/', [McqController::class, 'getAll']);
+        Route::get('/{id}', [McqController::class, 'getById']);
+        Route::post('/', [McqController::class, 'create']);
+        Route::put('/{id}', [McqController::class, 'update']);
+        Route::delete('/{id}', [McqController::class, 'delete']);
+        Route::get('/{type}/{id}', [McqController::class, 'getByMcqable']);
     });
 });
