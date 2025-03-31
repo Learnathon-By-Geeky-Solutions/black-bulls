@@ -51,28 +51,30 @@ class CourseController extends Controller
 
     public function update(UpdateCourseRequest $request, int $id): JsonResponse
     {
-        $course = $this->courseService->update($id, $request->validated());
+        $response = $this->courseService->update($id, $request->validated());
         return response()->json([
-            'is_success' => true,
-            'data' => $course
-        ]);
+            'is_success' => $response['is_success'],
+            'message' => $response['message'],
+            'data' => $response['data']
+        ], $response['status']);
     }
 
     public function delete(int $id): JsonResponse
     {
-        $this->courseService->delete($id);
+        $response = $this->courseService->delete($id);
         return response()->json([
-            'is_success' => true,
-            'message' => 'Course deleted successfully'
-        ]);
+            'is_success' => $response['is_success'],
+            'message' => $response['message']
+        ], $response['status']);
     }
 
     public function getUserCourses(): JsonResponse
     {
-        $courses = $this->courseService->getUserCourses();
+        $response = $this->courseService->getUserCourses();
         return response()->json([
-            'is_success' => true,
-            'data' => $courses
-        ]);
+            'is_success' => $response['is_success'] ?? true,
+            'message' => $response['message'],
+            'data' => $response['data']
+        ], $response['status'] ?? 200);
     }
 }

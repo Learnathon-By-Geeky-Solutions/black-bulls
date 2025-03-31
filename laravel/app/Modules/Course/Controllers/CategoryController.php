@@ -3,120 +3,67 @@
 namespace App\Modules\Course\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Modules\Course\Models\Category;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+use App\Modules\Course\Requests\CreateCategoryRequest;
+use App\Modules\Course\Requests\UpdateCategoryRequest;
+use App\Modules\Course\Services\CategoryService;
+use Illuminate\Http\JsonResponse;
 
 class CategoryController extends Controller
 {
-    const CATEGORY_NOT_FOUND = 'Category not found';
-    
-    public function index(){
-        try {
-            $categories = Category::all();
-            return response()->json([
-                'is_success' => true,
-                'data' => $categories
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'is_success' => false,
-                'error' => $e->getMessage()
-            ], 500);
-        }
+    protected $categoryService;
+
+    public function __construct(CategoryService $categoryService)
+    {
+        $this->categoryService = $categoryService;
     }
 
-    public function show($id){
-        try {
-            $category = Category::findOrFail($id);
-            return response()->json([
-                'is_success' => true,
-                'data' => $category
-            ], 200);
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'is_success' => false,
-                'error' => self::CATEGORY_NOT_FOUND
-            ], 404);
-        } catch (\Exception $e) {
-            return response()->json([
-                'is_success' => false,
-                'error' => $e->getMessage()
-            ], 500);
-        }
+    public function getAll(): JsonResponse
+    {
+        $response = $this->categoryService->getAll();
+        return response()->json([
+            'is_success' => $response['is_success'],
+            'message' => $response['message'],
+            'data' => $response['data']
+        ], $response['status']);
     }
 
-    public function store(Request $request){
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
-        ]);
-
-        try {
-            $category = Category::create($data);
-            return response()->json([
-                'is_success' => true,
-                'data' => $category
-            ], 201);
-        } catch (\Exception $e) {
-            return response()->json([
-                'is_success' => false,
-                'error' => $e->getMessage()
-            ], 500);
-        }
+    public function getById(int $id): JsonResponse
+    {
+        $response = $this->categoryService->getById($id);
+        return response()->json([
+            'is_success' => $response['is_success'],
+            'message' => $response['message'],
+            'data' => $response['data']
+        ], $response['status']);
     }
 
-    public function update(Request $request, $id){
-        try {
-            $category = Category::findOrFail($id);
-            $data = $request->only(['name', 'description']);
-
-            if (empty($data)) {
-                return response()->json([
-                    'is_success' => false,
-                    'error' => 'No data provided for update'
-                ], 400);
-            }
-
-            $category->update($data);
-            $category->refresh();
-                        
-            return response()->json([
-                'is_success' => true,
-                'data' => $category
-            ], 200);
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'is_success' => false,
-                'error' => self::CATEGORY_NOT_FOUND
-            ], 404);
-        } catch (\Exception $e) {
-            return response()->json([
-                'is_success' => false,
-                'error' => $e->getMessage()
-            ], 500);
-        }
+    public function create(CreateCategoryRequest $request): JsonResponse
+    {
+        $response = $this->categoryService->create($request->validated());
+        
+        return response()->json([
+            'is_success' => $response['is_success'],
+            'message' => $response['message'],
+            'data' => $response['data']
+        ], $response['status']);
     }
 
-    public function delete($id){
-        try {
-            $category = Category::findOrFail($id);
-            $category->delete();
-            return response()->json([
-                'is_success' => true,
-                'message' => 'Category deleted successfully'
-            ], 200);
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'is_success' => false,
-                'error' => self::CATEGORY_NOT_FOUND
-            ], 404);
-        } catch (\Exception $e) {
-            return response()->json([
-                'is_success' => false,
-                'error' => $e->getMessage()
-            ], 500);
-        }
+    public function update(UpdateCategoryRequest $request, int $id): JsonResponse
+    {
+        $response = $this->categoryService->update($id, $request->validated());
+        return response()->json([
+            'is_success' => $response['is_success'],
+            'message' => $response['message'],
+            'data' => $response['data']
+        ], $response['status']);
+    }
+
+    public function delete(int $id): JsonResponse
+    {
+        $response = $this->categoryService->delete($id);
+        return response()->json([
+            'is_success' => $response['is_success'],
+            'message' => $response['message']
+        ], $response['status']);
     }
 }

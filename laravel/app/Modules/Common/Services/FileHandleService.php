@@ -47,9 +47,10 @@ class FileHandleService
             return rtrim($diskConfig['url'], '/') . '/' . $path;
         }
 
-        // For public disk, use Laravel's URL generation
+        // For public disk, use Laravel's URL generation with port
         if ($this->disk === 'public') {
-            return Storage::url($path);
+            $baseUrl = config('app.file_storage_url', 'http://localhost:8000');
+            return rtrim($baseUrl, '/') . Storage::url($path);
         }
 
         // For other drivers, return the file path
@@ -65,9 +66,11 @@ class FileHandleService
             $url = str_replace($diskConfig['url'], '', $url);
         }
         
-        // For public disk, remove the base path
+        // For public disk, remove the base path and any port number
         if ($this->disk === 'public') {
             $url = str_replace($this->basePath, '', $url);
+            // Remove any port number from the URL
+            $url = preg_replace('/:\d+/', '', $url);
         }
 
         // Remove any leading slashes

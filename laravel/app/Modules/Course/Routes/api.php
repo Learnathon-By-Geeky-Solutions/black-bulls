@@ -5,14 +5,23 @@ use App\Modules\Course\Controllers\CategoryController;
 use App\Modules\Course\Controllers\ChapterController;
 use App\Modules\Course\Controllers\CourseSectionController;
 use App\Modules\Course\Controllers\LessonController;
+use App\Modules\Course\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
+
+// Public routes for home page
+Route::prefix('home')->group(function () {
+    Route::get('/free-courses', [HomeController::class, 'getFreeCourses']);
+    Route::get('/popular-courses', [HomeController::class, 'getPopularCourses']);
+    Route::get('/trending-courses', [HomeController::class, 'getTrendingCourses']);
+    Route::get('/categories', [HomeController::class, 'getCategories']);
+});
 
 // Category routes for admins
 Route::middleware(['auth:api', 'role:admin'])->group(function () {
     Route::prefix('categories')->group(function () {
-        Route::get('/', [CategoryController::class, 'index']);
-        Route::get('/{id}', [CategoryController::class, 'show']);
-        Route::post('/', [CategoryController::class, 'store']);
+        Route::get('/', [CategoryController::class, 'getAll']);
+        Route::get('/{id}', [CategoryController::class, 'getById']);
+        Route::post('/', [CategoryController::class, 'create']);
         Route::put('/{id}', [CategoryController::class, 'update']);
         Route::delete('/{id}', [CategoryController::class, 'delete']);
     });
