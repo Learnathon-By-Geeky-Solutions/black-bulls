@@ -4,29 +4,22 @@ namespace App\Modules\Course\Requests;
 
 class UpdateCourseRequest extends BaseCourseRequest
 {
-    public function authorize(): bool
-    {
-        return true;
-    }
+    private const NULLABLE_STRING = 'sometimes|string';
+    private const NULLABLE_BOOLEAN = 'sometimes|boolean';
 
     public function rules(): array
     {
-        return array_merge(
-            $this->getCommonRules(),
-            [
-                'title' => 'sometimes|string|max:255',
-                'description' => 'sometimes|string',
-                'price' => 'sometimes|numeric|min:0',
-                'duration' => 'sometimes|integer|min:1',
-                'status' => 'sometimes|in:draft,published',
-                'category_id' => 'sometimes|exists:categories,id',
-                'thumbnail' => 'sometimes|string|max:255',
-                'level' => 'sometimes|in:beginner,intermediate,advanced',
-                'language' => 'sometimes|string|max:50',
-                'what_you_will_learn' => 'sometimes|string',
-                'target_audience' => 'sometimes|string',
-            ]
-        );
+        return array_merge($this->getCommonRules(), [
+            'title' => self::NULLABLE_STRING . '|max:255',
+            'description' => self::NULLABLE_STRING,
+            'price' => 'sometimes|numeric|min:0',
+            'thumbnail' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'status' => 'sometimes|in:active,inactive,draft',
+            'instructor_id' => 'sometimes|exists:users,id',
+            'is_published' => self::NULLABLE_BOOLEAN,
+            'is_featured' => self::NULLABLE_BOOLEAN,
+            'is_approved' => self::NULLABLE_BOOLEAN
+        ]);
     }
 
     public function messages(): array

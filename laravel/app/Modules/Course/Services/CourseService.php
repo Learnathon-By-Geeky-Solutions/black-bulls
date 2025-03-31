@@ -10,14 +10,18 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Exception;
+use App\Modules\Common\Services\FileHandleService;
 
 class CourseService
 {
     protected $courseRepository;
+    protected $fileHandleService;
+    private const THUMBNAIL_PATH = 'thumbnails/courses';
 
-    public function __construct()
+    public function __construct(FileHandleService $fileHandleService)
     {
         $this->courseRepository = app()->make(RepositoryInterface::class, ['model'=> new Course()]);
+        $this->fileHandleService = $fileHandleService;
     }
 
     public function getAll(): array
@@ -37,6 +41,11 @@ class CourseService
         try {
             DB::beginTransaction();
             
+            // Handle thumbnail upload
+            if (isset($data['thumbnail'])) {
+                $data['thumbnail'] = $this->fileHandleService->storeFile($data['thumbnail'], self::THUMBNAIL_PATH);
+            }
+
             $data['instructor_id'] = Auth::id();
             $course = $this->courseRepository->create($data);
             
@@ -50,6 +59,11 @@ class CourseService
             ];
         } catch (Exception $e) {
             DB::rollBack();
+            
+            // Clean up uploaded thumbnail if there was an error
+            if (isset($data['thumbnail'])) {
+                $this->fileHandleService->deleteFile($data['thumbnail']);
+            }
             
             return [
                 'is_success' => false,
@@ -78,20 +92,38 @@ class CourseService
         try {
             DB::beginTransaction();
             
+            $course = $this->courseRepository->getById($id);
+            
+            // Handle thumbnail upload
+            if (isset($data['thumbnail'])) {
+                // Delete old thumbnail
+                $this->fileHandleService->deleteFile($course->thumbnail);
+                $data['thumbnail'] = $this->fileHandleService->storeFile($data['thumbnail'], self::THUMBNAIL_PATH);
+            }
+            
             $course = $this->courseRepository->update($id, $data);
             
             DB::commit();
 
             return [
+                'is_success' => true,
                 'message' => 'Course updated successfully',
-                'data' => $course
+                'data' => $course,
+                'status' => 200
             ];
         } catch (Exception $e) {
             DB::rollBack();
             
+            // Clean up uploaded thumbnail if there was an error
+            if (isset($data['thumbnail'])) {
+                $this->fileHandleService->deleteFile($data['thumbnail']);
+            }
+            
             return [
                 'is_success' => false,
-                'message' => 'Failed to update course: ' . $e->getMessage()
+                'message' => 'Failed to update course: ' . $e->getMessage(),
+                'data' => null,
+                'status' => 500
             ];
         }
     }
@@ -101,19 +133,27 @@ class CourseService
         try {
             DB::beginTransaction();
             
+            $course = $this->courseRepository->getById($id);
+            
+            // Delete thumbnail
+            $this->fileHandleService->deleteFile($course->thumbnail);
+            
             $this->courseRepository->delete($id);
             
             DB::commit();
 
             return [
-                'message' => 'Course deleted successfully'
+                'is_success' => true,
+                'message' => 'Course deleted successfully',
+                'status' => 200
             ];
         } catch (Exception $e) {
             DB::rollBack();
             
             return [
                 'is_success' => false,
-                'message' => 'Failed to delete course: ' . $e->getMessage()
+                'message' => 'Failed to delete course: ' . $e->getMessage(),
+                'status' => 500
             ];
         }
     }
@@ -125,13 +165,17 @@ class CourseService
             $courses = $this->courseRepository->getByIdWithParameters($userId);
             
             return [
+                'is_success' => true,
                 'message' => 'User courses retrieved successfully',
-                'data' => $courses
+                'data' => $courses,
+                'status' => 200
             ];
         } catch (Exception $e) {
             return [
                 'is_success' => false,
-                'message' => 'Failed to retrieve user courses: ' . $e->getMessage()
+                'message' => 'Failed to retrieve user courses: ' . $e->getMessage(),
+                'data' => null,
+                'status' => 500
             ];
         }
     }
