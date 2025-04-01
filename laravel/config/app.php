@@ -61,6 +61,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | File Storage URL
+    |--------------------------------------------------------------------------
+    |
+    | This URL is used for generating file storage URLs. This should be set to
+    | the URL where your application is accessible, including the port number
+    | if necessary.
+    |
+    */
+
+    'file_storage_url' => env('FILE_STORAGE_URL', 'http://localhost:8000'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Timezone
     |--------------------------------------------------------------------------
     |

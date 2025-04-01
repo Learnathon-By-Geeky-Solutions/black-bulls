@@ -13,7 +13,9 @@ return [
     |
     */
 
-    'default' => env('FILESYSTEM_DISK', 'local'),
+    'default' => env('FILESYSTEM_DISK', 'public'),
+
+    'base_path' => env('FILESYSTEM_BASE_PATH', '/storage'),
 
     /*
     |--------------------------------------------------------------------------
@@ -39,7 +41,7 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+            'url' => env('FILE_STORAGE_URL', 'http://localhost:8000').'/storage',
             'visibility' => 'public',
             'throw' => false,
         ],

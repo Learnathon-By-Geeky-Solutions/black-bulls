@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use App\Modules\Progress\Models\ProgressTracking;
+use App\Modules\Progress\Models\AnalyticsTracking;
 
 class Video extends Model
 {
@@ -31,5 +33,15 @@ class Video extends Model
     public function videoable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    public function progress(): MorphTo
+    {
+        return $this->morphTo(ProgressTracking::class, 'trackable');
+    }
+
+    public function analytics(): MorphTo
+    {
+        return $this->morphTo(AnalyticsTracking::class, 'trackable');
     }
 }

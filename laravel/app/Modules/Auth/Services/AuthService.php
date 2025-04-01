@@ -44,7 +44,7 @@ class AuthService implements AuthServiceInterface
             $user->save();
             $user->assignRole($data['role']);
     
-            $token = JWTAuth::fromUser($user);
+            $token = JWTAuth::fromUser($user, ['ttl' => 43200]);
 
             DB::commit();
             
@@ -71,7 +71,7 @@ class AuthService implements AuthServiceInterface
 
     public function login(array $credentials){
         try{
-            if(!$token = JWTAuth::attempt($credentials)){
+            if(!$token = JWTAuth::attempt($credentials, ['ttl' => 43200])){
                 return [
                     'is_success' => false,
                     'message' => 'Invalid email or password',
@@ -106,7 +106,7 @@ class AuthService implements AuthServiceInterface
     }
 
     public function refreshToken(){
-        $newToken = JWTAuth::refresh(JWTAuth::getToken());
+        $newToken = JWTAuth::refresh(JWTAuth::getToken(), ['ttl' => 43200]);
         return $this->formatTokenResponse($newToken);
     }
 
@@ -114,7 +114,7 @@ class AuthService implements AuthServiceInterface
         return [
             'access_token' => $token,
             'token_type' =>'bearer',
-            'expires_in'=> JWTAuth::factory()->getTTL()*60
+            'expires_in'=> 2592000 // 1 month in seconds (43200 minutes * 60)
         ];
     }
 }
