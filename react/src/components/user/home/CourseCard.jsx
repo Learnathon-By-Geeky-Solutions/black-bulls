@@ -1,0 +1,31 @@
+import { Link } from 'react-router-dom';
+import styles from './Section.module.css';
+
+const CourseCard = ({ course }) => {
+  return (
+    <Link to={`/courses/${course.id}`} className={styles.courseCard}>
+      <div className={styles.courseImage}>
+        <img src={course.thumbnail} alt={course.title} />
+      </div>
+      <div className={styles.courseContent}>
+        <h3>{course.title}</h3>
+        <p className={styles.description}>{course.description?.substring(0, 100)}...</p>
+        <div className={styles.categories}>
+          {course.categories?.map((category) => (
+            <span key={category.id} className={styles.categoryTag}>
+              {category.name}
+            </span>
+          ))}
+        </div>
+        <div className={styles.instructor}>
+          Instructor: {course.instructor?.name}
+        </div>
+        <div className={styles.price}>
+          {course.price === 0 ? 'Free' : `$${course.price}`}
+        </div>
+      </div>
+    </Link>
+  );
+};
+
+export default CourseCard; 

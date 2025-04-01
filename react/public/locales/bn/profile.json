@@ -1,0 +1,20 @@
+{
+  "profile": {
+    "loading": "প্রোফাইল লোড হচ্ছে...",
+    "fetchError": "প্রোফাইল লোড করতে ব্যর্থ হয়েছে",
+    "email": "ইমেইল ঠিকানা",
+    "phone": "ফোন নম্বর",
+    "designation": "পদবি",
+    "institution": "প্রতিষ্ঠান",
+    "department": "বিভাগ",
+    "address": "ঠিকানা",
+    "editProfile": "প্রোফাইল সম্পাদনা",
+    "changePassword": "পাসওয়ার্ড পরিবর্তন",
+    "currentPassword": "বর্তমান পাসওয়ার্ড",
+    "newPassword": "নতুন পাসওয়ার্ড",
+    "confirmPassword": "নতুন পাসওয়ার্ড নিশ্চিত করুন",
+    "save": "পরিবর্তন সংরক্ষণ",
+    "cancel": "বাতিল",
+    "logout": "লগআউট"
+  }
+} 

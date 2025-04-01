@@ -1,0 +1,39 @@
+.homePage {
+  min-height: 100vh;
+  background-color: #f7fafc;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.hero {
+  background: linear-gradient(135deg, #2c5282 0%, #2a4365 100%);
+  color: white;
+  padding: 6rem 2rem;
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.heroContent {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.heroContent h1 {
+  font-size: 3.5rem;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+}
+
+.heroContent p {
+  font-size: 1.25rem;
+  opacity: 0.9;
+  line-height: 1.6;
+}
+
+.homePage > section {
+  margin-bottom: 4rem;
+}
+
+.homePage > section:last-child {
+  margin-bottom: 0;
+} 
