@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import PropTypes from 'prop-types';
 import styles from './ChangePasswordModal.module.css';
 
 const ChangePasswordModal = ({ onClose, onSave }) => {
@@ -73,6 +74,11 @@ const ChangePasswordModal = ({ onClose, onSave }) => {
       </div>
     </div>
   );
+};
+
+ChangePasswordModal.propTypes = {
+  onClose: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired
 };
 
 export default ChangePasswordModal; 

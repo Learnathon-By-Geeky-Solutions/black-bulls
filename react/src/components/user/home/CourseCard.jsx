@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import styles from './Section.module.css';
 
 const CourseCard = ({ course }) => {
@@ -26,6 +27,23 @@ const CourseCard = ({ course }) => {
       </div>
     </Link>
   );
+};
+
+CourseCard.propTypes = {
+  course: PropTypes.shape({
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    thumbnail: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string,
+    categories: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+      name: PropTypes.string.isRequired
+    })),
+    instructor: PropTypes.shape({
+      name: PropTypes.string.isRequired
+    }),
+    price: PropTypes.number.isRequired
+  }).isRequired
 };
 
 export default CourseCard; 

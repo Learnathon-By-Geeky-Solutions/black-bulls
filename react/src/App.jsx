@@ -16,15 +16,15 @@ const App = () => {
   return (
     <Suspense fallback={<Loading />}>
       <Routes>
-        {userRoutes.map((route, index) => (
+        {userRoutes.map((route) => (
           <Route
-            key={index}
+            key={route.path}
             path={route.path}
             element={route.element}
           >
-            {route.children?.map((child, childIndex) => (
+            {route.children?.map((child) => (
               <Route
-                key={childIndex}
+                key={`${route.path}-${child.path}`}
                 path={child.path}
                 element={child.element}
               />

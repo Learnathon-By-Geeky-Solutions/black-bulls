@@ -34,9 +34,15 @@ const Footer = () => {
           <div className={styles.section}>
             <h3>{t('footer.connect')}</h3>
             <div className={styles.social}>
-              <a href="#" aria-label="Facebook"><FacebookIcon /></a>
-              <a href="#" aria-label="Twitter"><TwitterIcon /></a>
-              <a href="#" aria-label="LinkedIn"><LinkedInIcon /></a>
+              <button type="button" className={styles.socialButton} aria-label="Facebook">
+                <FacebookIcon />
+              </button>
+              <button type="button" className={styles.socialButton} aria-label="Twitter">
+                <TwitterIcon />
+              </button>
+              <button type="button" className={styles.socialButton} aria-label="LinkedIn">
+                <LinkedInIcon />
+              </button>
             </div>
           </div>
         </div>

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import PropTypes from 'prop-types';
 import styles from './EditProfileModal.module.css';
 
 const EditProfileModal = ({ user, onClose, onSave }) => {
@@ -132,6 +133,21 @@ const EditProfileModal = ({ user, onClose, onSave }) => {
       </div>
     </div>
   );
+};
+
+EditProfileModal.propTypes = {
+  user: PropTypes.shape({
+    name: PropTypes.string,
+    phone: PropTypes.string,
+    user_details: PropTypes.shape({
+      designation: PropTypes.string,
+      institution: PropTypes.string,
+      dept: PropTypes.string,
+      address: PropTypes.string
+    })
+  }).isRequired,
+  onClose: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired
 };
 
 export default EditProfileModal; 

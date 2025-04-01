@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import PropTypes from 'prop-types';
 import styles from './Section.module.css';
 import CourseCard from './CourseCard';
 
@@ -43,6 +44,27 @@ const CourseSection = ({
             )}
         </section>
     );
+};
+
+CourseSection.propTypes = {
+    titleKey: PropTypes.string.isRequired,
+    subtitleKey: PropTypes.string.isRequired,
+    viewAllKey: PropTypes.string.isRequired,
+    viewAllLink: PropTypes.string.isRequired,
+    courses: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+        // Add other course properties as needed
+    })),
+    loading: PropTypes.bool,
+    error: PropTypes.bool,
+    maxDisplay: PropTypes.number
+};
+
+CourseSection.defaultProps = {
+    loading: false,
+    error: false,
+    maxDisplay: 4,
+    courses: []
 };
 
 export default CourseSection; 
