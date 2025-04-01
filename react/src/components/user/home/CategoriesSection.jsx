@@ -1,12 +1,15 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import styles from './Section.module.css';
-import useCategories from '../../../hooks/useCategories';
+import useCourseData from '../../../hooks/user/course/useCourseData';
 import CategoryCard from './CategoryCard';
 
 const CategoriesSection = () => {
   const { t } = useTranslation(['home', 'common']);
-  const { categories, loading, error } = useCategories();
+  const { courses: categories, loading, error } = useCourseData(
+    '/home/categories',
+    'Failed to fetch categories'
+  );
 
   if (loading) {
     return <div className={styles.loading}>{t('common:loading')}</div>;

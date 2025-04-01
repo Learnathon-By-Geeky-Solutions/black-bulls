@@ -1,36 +1,27 @@
-import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { useFreeCourses } from '../../../hooks/useFreeCourses';
-import CourseCard from './CourseCard';
-import styles from './Section.module.css';
+import useCourseData from '../../../hooks/user/course/useCourseData';
+import CourseSection from './CourseSection';
 
 const FreeCoursesSection = () => {
-  const { t } = useTranslation(['home', 'common']);
-  const { courses, isLoading, error } = useFreeCourses();
+    const { courses, loading, error } = useCourseData(
+        '/home/free-courses',
+        'Failed to fetch free courses'
+    );
 
-  if (isLoading) return <div className={styles.loading}>{t('common:loading')}</div>;
-  if (error) return <div className={styles.error}>{t('common:error')}</div>;
+    // Transform the courses data to handle the nested structure
+    const transformedCourses = courses?.data || [];
 
-  return (
-    <section className={styles.section}>
-      <div className={styles.sectionHeader}>
-        <h2>{t('home:freeCourses.title')}</h2>
-        <p>{t('home:freeCourses.subtitle')}</p>
-      </div>
-      <div className={styles.courseGrid}>
-        {courses?.slice(0, 4).map((course) => (
-          <CourseCard key={course.id} course={course} />
-        ))}
-      </div>
-      {courses?.length > 3 && (
-        <div className={styles.viewAllContainer}>
-          <Link to="/courses/free-courses" className={styles.viewAllButton}>
-            {t('home:freeCourses.viewAll')}
-          </Link>
-        </div>
-      )}
-    </section>
-  );
+    return (
+        <CourseSection
+            titleKey="home:freeCourses.title"
+            subtitleKey="home:freeCourses.subtitle"
+            viewAllKey="home:freeCourses.viewAll"
+            viewAllLink="/courses/free-courses"
+            courses={transformedCourses}
+            loading={loading}
+            error={error}
+            maxDisplay={4}
+        />
+    );
 };
 
 export default FreeCoursesSection; 
