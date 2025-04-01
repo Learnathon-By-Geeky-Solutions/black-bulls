@@ -1,34 +1,39 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Suspense, useEffect } from 'react'
+import { Routes, Route, useNavigate } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import userRoutes from './routes/userRoutes.jsx'
+import Loading from './components/common/Loading/Loading'
+import { setNavigate } from './config/authInterceptor'
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setNavigate(navigate);
+  }, [navigate]);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Hello Black-Bulls</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <Suspense fallback={<Loading />}>
+      <Routes>
+        {userRoutes.map((route) => (
+          <Route
+            key={route.path}
+            path={route.path}
+            element={route.element}
+          >
+            {route.children?.map((child) => (
+              <Route
+                key={`${route.path}-${child.path}`}
+                path={child.path}
+                element={child.element}
+              />
+            ))}
+          </Route>
+        ))}
+      </Routes>
+      <ToastContainer />
+    </Suspense>
   )
 }
 

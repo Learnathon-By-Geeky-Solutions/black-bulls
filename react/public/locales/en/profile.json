@@ -1,0 +1,20 @@
+{
+  "profile": {
+    "loading": "Loading profile...",
+    "fetchError": "Failed to load profile",
+    "email": "Email Address",
+    "phone": "Phone Number",
+    "designation": "Designation",
+    "institution": "Institution",
+    "department": "Department",
+    "address": "Address",
+    "editProfile": "Edit Profile",
+    "changePassword": "Change Password",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm New Password",
+    "save": "Save Changes",
+    "cancel": "Cancel",
+    "logout": "Logout"
+  }
+} 
