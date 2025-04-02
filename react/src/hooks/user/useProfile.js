@@ -29,11 +29,25 @@ export const useProfile = () => {
             }
         } catch (err) {
             console.error('Profile fetch error:', err);
-            dispatch(setError(err.response?.data?.message || 'Failed to fetch profile'));
+            if (err.response?.status === 401) {
+                localStorage.removeItem(import.meta.env.VITE_AUTH_TOKEN_KEY);
+                dispatch(clearUser());
+                navigate('/login');
+            } else {
+                dispatch(setError(err.response?.data?.message || 'Failed to fetch profile'));
+            }
         } finally {
             dispatch(setLoading(false));
         }
     };
+
+    // Fetch profile on mount if we have a token but no user
+    useEffect(() => {
+        const token = localStorage.getItem(import.meta.env.VITE_AUTH_TOKEN_KEY);
+        if (token && !user) {
+            fetchProfile();
+        }
+    }, []);
 
     const updateProfile = async (profileData) => {
         try {
@@ -66,14 +80,11 @@ export const useProfile = () => {
         }
     };
 
-    useEffect(() => {
-        fetchProfile();
-    }, []);
-
     return {
         user,
         isLoading,
         error,
+        fetchProfile,
         updateProfile,
         updatePassword,
         refetch: fetchProfile
