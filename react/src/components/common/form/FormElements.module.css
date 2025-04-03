@@ -1,0 +1,185 @@
+.formGroup {
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #333;
+}
+
+/* Input Styles */
+.input,
+.textarea,
+.select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.input:focus,
+.textarea:focus,
+.select:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.input.error,
+.textarea.error,
+.select.error {
+  border-color: #dc3545;
+}
+
+/* Textarea Styles */
+.textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Select Styles */
+.select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 8L2 4h8z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  padding-right: 2.5rem;
+}
+
+/* Checkbox and Radio Styles */
+.checkboxGroup,
+.radioGroup {
+  display: flex;
+  align-items: center;
+}
+
+.checkboxLabel,
+.radioLabel {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.checkbox,
+.radio {
+  margin-right: 0.5rem;
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.checkboxText,
+.radioText {
+  font-size: 1rem;
+  color: #333;
+}
+
+/* File Input Styles */
+.fileInput {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.previewContainer {
+  margin-top: 1rem;
+}
+
+.previewImage {
+  max-width: 200px;
+  max-height: 200px;
+  border-radius: 4px;
+}
+
+/* Button Styles */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Button Variants */
+.primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.primary:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+.secondary:hover:not(:disabled) {
+  background-color: #5a6268;
+}
+
+.danger {
+  background-color: #dc3545;
+  color: white;
+}
+
+.danger:hover:not(:disabled) {
+  background-color: #c82333;
+}
+
+.success {
+  background-color: #28a745;
+  color: white;
+}
+
+.success:hover:not(:disabled) {
+  background-color: #218838;
+}
+
+.warning {
+  background-color: #ffc107;
+  color: #333;
+}
+
+.warning:hover:not(:disabled) {
+  background-color: #e0a800;
+}
+
+/* Button Sizes */
+.small {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+.medium {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+}
+
+.large {
+  padding: 0.75rem 1.5rem;
+  font-size: 1.125rem;
+}
+
+/* Error Message Styles */
+.errorMessage {
+  display: block;
+  margin-top: 0.5rem;
+  color: #dc3545;
+  font-size: 0.875rem;
+} 

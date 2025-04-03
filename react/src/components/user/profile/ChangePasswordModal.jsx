@@ -1,8 +1,10 @@
+import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import PropTypes from 'prop-types';
 import { useProfile } from '../../../hooks/user/profile/useProfile';
 import { toast } from 'react-toastify';
+import Modal from '../../common/Modal';
+import { Input } from '../../common/form';
 import styles from './ChangePasswordModal.module.css';
 
 const ChangePasswordModal = ({ onClose }) => {
@@ -56,89 +58,47 @@ const ChangePasswordModal = ({ onClose }) => {
   };
 
   return (
-    <div className={styles.modalOverlay}>
-      <div className={styles.modalContent}>
-        <h2>{t('profile.changePassword')}</h2>
-        {formError && (
-          <div className={styles.formError}>
-            {formError}
-          </div>
-        )}
-        <form onSubmit={handleSubmit}>
-          <div className={styles.formGroup}>
-            <label>{t('profile.currentPassword')}</label>
-            <input
-              type="password"
-              name="current_password"
-              value={formData.current_password}
-              onChange={handleChange}
-              className={errors.current_password ? styles.error : ''}
-            />
-            {errors.current_password && (
-              <span className={styles.errorMessage}>
-                {Array.isArray(errors.current_password) 
-                  ? errors.current_password[0] 
-                  : errors.current_password}
-              </span>
-            )}
-          </div>
+    <Modal
+      title={t('profile.changePassword')}
+      onClose={onClose}
+      onSubmit={handleSubmit}
+      isLoading={isLoading}
+    >
+      {formError && (
+        <div className={styles.formError}>
+          {formError}
+        </div>
+      )}
+      <Input
+        label={t('profile.currentPassword')}
+        name="current_password"
+        type="password"
+        value={formData.current_password}
+        onChange={handleChange}
+        error={errors.current_password}
+        required
+      />
 
-          <div className={styles.formGroup}>
-            <label>{t('profile.newPassword')}</label>
-            <input
-              type="password"
-              name="new_password"
-              value={formData.new_password}
-              onChange={handleChange}
-              className={errors.new_password ? styles.error : ''}
-            />
-            {errors.new_password && (
-              <span className={styles.errorMessage}>
-                {Array.isArray(errors.new_password) 
-                  ? errors.new_password[0] 
-                  : errors.new_password}
-              </span>
-            )}
-          </div>
+      <Input
+        label={t('profile.newPassword')}
+        name="new_password"
+        type="password"
+        value={formData.new_password}
+        onChange={handleChange}
+        error={errors.new_password}
+        required
+      />
 
-          <div className={styles.formGroup}>
-            <label>{t('profile.confirmPassword')}</label>
-            <input
-              type="password"
-              name="new_password_confirmation"
-              value={formData.new_password_confirmation}
-              onChange={handleChange}
-              className={errors.new_password_confirmation ? styles.error : ''}
-            />
-            {errors.new_password_confirmation && (
-              <span className={styles.errorMessage}>
-                {Array.isArray(errors.new_password_confirmation) 
-                  ? errors.new_password_confirmation[0] 
-                  : errors.new_password_confirmation}
-              </span>
-            )}
-          </div>
-
-          <div className={styles.modalActions}>
-            <button 
-              type="button" 
-              onClick={onClose} 
-              className={styles.cancelButton}
-              disabled={isLoading}
-            >
-              {t('profile.cancel')}
-            </button>
-            <button 
-              type="submit" 
-              className={styles.saveButton}
-              disabled={isLoading}
-            >
-              {isLoading ? t('profile.saving') : t('profile.save')}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+      <Input
+        label={t('profile.confirmPassword')}
+        name="new_password_confirmation"
+        type="password"
+        value={formData.new_password_confirmation}
+        onChange={handleChange}
+        error={errors.new_password_confirmation}
+        required
+      />
+    </Modal>
   );
 };
 
