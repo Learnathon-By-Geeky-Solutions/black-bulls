@@ -6,6 +6,7 @@ use App\Modules\Course\Controllers\ChapterController;
 use App\Modules\Course\Controllers\CourseSectionController;
 use App\Modules\Course\Controllers\LessonController;
 use App\Modules\Course\Controllers\HomeController;
+use App\Modules\Course\Controllers\PublicCourseController;
 use Illuminate\Support\Facades\Route;
 
 // Public routes for home page
@@ -14,6 +15,11 @@ Route::prefix('home')->group(function () {
     Route::get('/popular-courses', [HomeController::class, 'getPopularCourses']);
     Route::get('/trending-courses', [HomeController::class, 'getTrendingCourses']);
     Route::get('/categories', [HomeController::class, 'getCategories']);
+});
+
+// Public course viewing routes
+Route::prefix('learn')->group(function () {
+    Route::get('/courses/{id}', [PublicCourseController::class, 'getCourseDetails']);
 });
 
 // Category routes for admins
