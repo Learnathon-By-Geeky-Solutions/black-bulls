@@ -4,6 +4,7 @@ namespace App\Modules\Auth\Services;
 
 use App\Modules\Common\Contracts\RepositoryInterface;
 use App\Models\User;
+use App\Models\UserDetail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -12,13 +13,13 @@ use App\Modules\Common\Services\FileHandleService;
 
 class ProfileService
 {
-    protected $userRepository;
+    protected $repository;
     protected $fileHandleService;
-    private const PROFILE_PICTURE_PATH = 'profile-pictures';
+    private const PROFILE_PATH = 'images/profiles';
 
     public function __construct(FileHandleService $fileHandleService)
     {
-        $this->userRepository = app()->make(RepositoryInterface::class, ['model' => new User()]);
+        $this->repository = app()->make(RepositoryInterface::class, ['model' => new User()]);
         $this->fileHandleService = $fileHandleService;
     }
 
@@ -26,7 +27,8 @@ class ProfileService
     {
         try {
             $userId = Auth::id();
-            $user = $this->userRepository->getById($userId);
+            $user = $this->repository->getById($userId);
+            $user->load('userDetails');
             
             return [
                 'is_success' => true,
@@ -50,20 +52,39 @@ class ProfileService
             DB::beginTransaction();
             
             $userId = Auth::id();
-            $user = $this->userRepository->getById($userId);
+            $user = $this->repository->getById($userId);
             
-            // Handle profile picture upload
             if (isset($data['profile_picture'])) {
-                // Delete old profile picture
                 if ($user->profile_picture) {
                     $this->fileHandleService->deleteFile($user->profile_picture);
                 }
-                $data['profile_picture'] = $this->fileHandleService->storeFile($data['profile_picture'], self::PROFILE_PICTURE_PATH);
+                $data['profile_picture'] = $this->fileHandleService->storeFile($data['profile_picture'], self::PROFILE_PATH);
             }
             
-            $user = $this->userRepository->update($userId, $data);
+            $userData = collect($data)->only(['name', 'phone', 'profile_picture'])->toArray();
+            $user = $this->repository->update($userId, $userData);
+            
+            $userDetailsData = collect($data)->only([
+                'designation',
+                'institution',
+                'dept',
+                'address'
+            ])->toArray();
+
+            if (!empty($userDetailsData)) {
+                $userDetails = $user->userDetails;
+                if (!$userDetails) {
+                    $userDetails = new UserDetail(['user_id' => $userId]);
+                }
+                
+                $userDetails->fill($userDetailsData);
+                $userDetails->save();
+            }
             
             DB::commit();
+            
+            // Reload user with user details
+            $user->load('userDetails');
 
             return [
                 'is_success' => true,
@@ -74,7 +95,6 @@ class ProfileService
         } catch (Exception $e) {
             DB::rollBack();
             
-            // Clean up uploaded profile picture if there was an error
             if (isset($data['profile_picture'])) {
                 $this->fileHandleService->deleteFile($data['profile_picture']);
             }
@@ -94,9 +114,8 @@ class ProfileService
             DB::beginTransaction();
             
             $userId = Auth::id();
-            $user = $this->userRepository->getById($userId);
+            $user = $this->repository->getById($userId);
             
-            // Verify current password
             if (!Hash::check($data['current_password'], $user->password)) {
                 return [
                     'is_success' => false,
@@ -105,10 +124,7 @@ class ProfileService
                 ];
             }
             
-            // Update password
-            $this->userRepository->update($userId, [
-                'password' => Hash::make($data['new_password'])
-            ]);
+            $this->repository->update($userId, ['password' => Hash::make($data['new_password'])]);
             
             DB::commit();
 

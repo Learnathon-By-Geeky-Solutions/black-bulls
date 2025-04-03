@@ -14,6 +14,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -99,5 +100,11 @@ class User extends Authenticatable implements JWTSubject
     public function analytics(): HasMany
     {
         return $this->hasMany(AnalyticsTracking::class);
+    }
+
+    // User Details Relationship
+    public function userDetails(): HasOne
+    {
+        return $this->hasOne(UserDetail::class);
     }
 }
