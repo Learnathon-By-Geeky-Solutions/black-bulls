@@ -5,6 +5,8 @@ namespace App\Modules\Auth\Services;
 use App\Modules\Auth\Contracts\AuthServiceInterface;
 use App\Modules\Auth\Repositories\Interfaces\AuthRepositoryInterface;
 use App\Models\User;
+use App\Modules\Common\Contracts\RepositoryInterface;
+use App\Modules\Common\Services\FileHandleService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -15,6 +17,16 @@ use Illuminate\Support\Facades\Log;
 
 class AuthService implements AuthServiceInterface
 {
+
+    protected $fileHandleService;
+    protected $repository;
+    private const PROFILE_PATH = 'images/profiles';
+
+    public function __construct(FileHandleService $fileHandleService) {
+        $this->fileHandleService = $fileHandleService;
+        $this->repository = app()->make(RepositoryInterface::class, ['model' => new User()]);
+    }
+
     public function register(array $data)
     {
         try{
@@ -29,22 +41,15 @@ class AuthService implements AuthServiceInterface
 
             DB::beginTransaction();
 
-            $user = new User();
-            $user->name = $data['name'];
-            $user->phone = $data['phone'];
-            $user->email = $data['email'];
-            $user->password = Hash::make($data['password']);
-    
             if (isset($data['profile_picture'])) {
-                $picture = $data['profile_picture'];
-                $picturePath = $picture->store('images/profile_pictures', 'public');
-                $user->profile_picture = $picturePath;
+                $data['profile_picture'] = $this->fileHandleService->storeFile($data['profile_picture'], self::PROFILE_PATH) ;
             }
+
+            $user = $this->repository->create($data);
     
-            $user->save();
             $user->assignRole($data['role']);
     
-            $token = JWTAuth::fromUser($user, ['ttl' => 43200]);
+            $token = JWTAuth::fromUser($user);
 
             DB::commit();
             
@@ -52,7 +57,6 @@ class AuthService implements AuthServiceInterface
                 'is_success' => true,
                 'message' => 'User created successfully',
                 'details' => 'User created successfully',
-                'user' => $user,
                 'token' => $this->formatTokenResponse($token),
                 'status' => 201,
             ];
@@ -71,7 +75,7 @@ class AuthService implements AuthServiceInterface
 
     public function login(array $credentials){
         try{
-            if(!$token = JWTAuth::attempt($credentials, ['ttl' => 43200])){
+            if(!$token = JWTAuth::attempt($credentials)){
                 return [
                     'is_success' => false,
                     'message' => 'Invalid email or password',
@@ -106,7 +110,7 @@ class AuthService implements AuthServiceInterface
     }
 
     public function refreshToken(){
-        $newToken = JWTAuth::refresh(JWTAuth::getToken(), ['ttl' => 43200]);
+        $newToken = JWTAuth::refresh(JWTAuth::getToken());
         return $this->formatTokenResponse($newToken);
     }
 

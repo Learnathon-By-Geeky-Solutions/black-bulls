@@ -26,7 +26,6 @@ class AuthController extends Controller
             'is_success' => $response['is_success'],
             'message' => $response['message'],
             'details' => $response['details'],
-            'user' => $response['is_success'] ? $response['user'] : null,
             'token' => $response['is_success'] ? $response['token'] : null
         ];
 
@@ -51,15 +50,19 @@ class AuthController extends Controller
     public function logout()
     {
         $this->authService->logout();
-        return response()->json(['message' => 'Successfully logged out']);
+        return response()->json([
+            'is_success' => true,
+            'message' => 'Successfully logged out'
+        ]);
     }
 
     public function refreshToken()
     {
         $refreshedToken = $this->authService->refreshToken();
         return response()->json([
+            'is_success' => true,
+            'message' => 'Token Refreshed Successfully',
             'token' => $refreshedToken,
-            'message' => 'Token Refreshed Successfully'
         ],200);
     }
 }

@@ -1,137 +1,148 @@
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
-import styles from './EditProfileModal.module.css';
+import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useProfile } from '../../../hooks/user/profile/useProfile';
+import { toast } from 'react-toastify';
+import Modal from '../../common/Modal';
+import { Input, TextArea, FileInput } from '../../common/form';
 
-const EditProfileModal = ({ user, onClose, onSave }) => {
+const EditProfileModal = ({ user, onClose }) => {
   const { t } = useTranslation('profile');
+  const { updateProfile, isLoading } = useProfile();
   const [formData, setFormData] = useState({
-    name: user.name || '',
-    phone: user.phone || '',
+    name: '',
+    phone: '',
     profile_picture: null,
-    user_details: {
-      designation: user.user_details?.designation || '',
-      institution: user.user_details?.institution || '',
-      dept: user.user_details?.dept || '',
-      address: user.user_details?.address || ''
-    }
+    designation: '',
+    institution: '',
+    dept: '',
+    address: ''
   });
+  const [previewUrl, setPreviewUrl] = useState(null);
+  const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        name: user.name || '',
+        phone: user.phone || '',
+        profile_picture: null,
+        designation: user.user_details?.designation || '',
+        institution: user.user_details?.institution || '',
+        dept: user.user_details?.dept || '',
+        address: user.user_details?.address || ''
+      });
+      setPreviewUrl(user.profile_picture || null);
+    }
+  }, [user]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name.includes('.')) {
-      const [parent, child] = name.split('.');
-      setFormData(prev => ({
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+    if (errors[name]) {
+      setErrors(prev => ({
         ...prev,
-        [parent]: {
-          ...prev[parent],
-          [child]: value
-        }
-      }));
-    } else {
-      setFormData(prev => ({
-        ...prev,
-        [name]: value
+        [name]: null
       }));
     }
   };
 
   const handleFileChange = (e) => {
-    setFormData(prev => ({
-      ...prev,
-      profile_picture: e.target.files[0]
-    }));
+    const file = e.target.files[0];
+    if (file) {
+      setFormData(prev => ({
+        ...prev,
+        profile_picture: file
+      }));
+      setPreviewUrl(URL.createObjectURL(file));
+    }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSave(formData);
+    setErrors({});
+
+    const result = await updateProfile(formData);
+    if (result.success) {
+      toast.success(result.message);
+      onClose();
+    } else if (result.errors) {
+      setErrors(result.errors);
+    } else {
+      toast.error(result.message || t('profile.updateError'));
+    }
   };
 
   return (
-    <div className={styles.modalOverlay}>
-      <div className={styles.modalContent}>
-        <h2>{t('profile.editProfile')}</h2>
-        <form onSubmit={handleSubmit}>
-          <div className={styles.formGroup}>
-            <label>{t('profile.name')}</label>
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-            />
-          </div>
+    <Modal
+      title={t('profile.editProfile')}
+      onClose={onClose}
+      onSubmit={handleSubmit}
+      isLoading={isLoading}
+    >
+      <Input
+        label={t('profile.name')}
+        name="name"
+        value={formData.name}
+        onChange={handleChange}
+        error={errors.name}
+        required
+      />
 
-          <div className={styles.formGroup}>
-            <label>{t('profile.phone')}</label>
-            <input
-              type="text"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-            />
-          </div>
+      <Input
+        label={t('profile.phone')}
+        name="phone"
+        value={formData.phone}
+        onChange={handleChange}
+        error={errors.phone}
+        required
+      />
 
-          <div className={styles.formGroup}>
-            <label>{t('profile.profilePicture')}</label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-            />
-          </div>
+      <FileInput
+        label={t('profile.profilePicture')}
+        name="profile_picture"
+        onChange={handleFileChange}
+        error={errors.profile_picture}
+        accept="image/*"
+        previewUrl={previewUrl}
+      />
 
-          <div className={styles.formGroup}>
-            <label>{t('profile.designation')}</label>
-            <input
-              type="text"
-              name="user_details.designation"
-              value={formData.user_details.designation}
-              onChange={handleChange}
-            />
-          </div>
+      <Input
+        label={t('profile.designation')}
+        name="designation"
+        value={formData.designation}
+        onChange={handleChange}
+        error={errors.designation}
+      />
 
-          <div className={styles.formGroup}>
-            <label>{t('profile.institution')}</label>
-            <input
-              type="text"
-              name="user_details.institution"
-              value={formData.user_details.institution}
-              onChange={handleChange}
-            />
-          </div>
+      <Input
+        label={t('profile.institution')}
+        name="institution"
+        value={formData.institution}
+        onChange={handleChange}
+        error={errors.institution}
+      />
 
-          <div className={styles.formGroup}>
-            <label>{t('profile.department')}</label>
-            <input
-              type="text"
-              name="user_details.dept"
-              value={formData.user_details.dept}
-              onChange={handleChange}
-            />
-          </div>
+      <Input
+        label={t('profile.department')}
+        name="dept"
+        value={formData.dept}
+        onChange={handleChange}
+        error={errors.dept}
+      />
 
-          <div className={styles.formGroup}>
-            <label>{t('profile.address')}</label>
-            <textarea
-              name="user_details.address"
-              value={formData.user_details.address}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className={styles.modalActions}>
-            <button type="button" onClick={onClose} className={styles.cancelButton}>
-              {t('profile.cancel')}
-            </button>
-            <button type="submit" className={styles.saveButton}>
-              {t('profile.save')}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+      <TextArea
+        label={t('profile.address')}
+        name="address"
+        value={formData.address}
+        onChange={handleChange}
+        error={errors.address}
+        rows={4}
+      />
+    </Modal>
   );
 };
 
@@ -139,15 +150,15 @@ EditProfileModal.propTypes = {
   user: PropTypes.shape({
     name: PropTypes.string,
     phone: PropTypes.string,
+    profile_picture: PropTypes.string,
     user_details: PropTypes.shape({
       designation: PropTypes.string,
       institution: PropTypes.string,
       dept: PropTypes.string,
       address: PropTypes.string
     })
-  }).isRequired,
-  onClose: PropTypes.func.isRequired,
-  onSave: PropTypes.func.isRequired
+  }),
+  onClose: PropTypes.func.isRequired
 };
 
 export default EditProfileModal; 

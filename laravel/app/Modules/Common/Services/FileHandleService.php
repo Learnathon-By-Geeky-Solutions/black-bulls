@@ -76,4 +76,4 @@ class FileHandleService
         // Remove any leading slashes
         return ltrim($url, '/');
     }
-} 
+}

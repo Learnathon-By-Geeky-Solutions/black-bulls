@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { useProfile } from '../../../hooks/user/useProfile';
+import { useProfile } from '../../../hooks/user/profile/useProfile';
 import { clearUser } from '../../../redux/slices/userSlice';
 import EditProfileModal from '../../../components/user/profile/EditProfileModal';
 import ChangePasswordModal from '../../../components/user/profile/ChangePasswordModal';
@@ -24,8 +24,10 @@ const ProfilePage = () => {
 
   const handleUpdateProfile = async (formData) => {
     try {
-      await updateProfile(formData);
-      setShowEditModal(false);
+      const result = await updateProfile(formData);
+      if (result.success) {
+        setShowEditModal(false);
+      }
     } catch (error) {
       console.error('Failed to update profile:', error);
     }
@@ -33,23 +35,50 @@ const ProfilePage = () => {
 
   const handleUpdatePassword = async (formData) => {
     try {
-      await updatePassword(formData);
-      setShowPasswordModal(false);
+      const result = await updatePassword(formData);
+      if (result.success) {
+        setShowPasswordModal(false);
+      }
     } catch (error) {
       console.error('Failed to update password:', error);
     }
   };
 
   if (isLoading) {
-    return <div className={styles.loading}>{t('profile.loading')}</div>;
+    return (
+      <div className={styles.profileContainer}>
+        <div className={styles.loading}>
+          <div className={styles.spinner}></div>
+          <p>{t('profile.loading')}</p>
+        </div>
+      </div>
+    );
   }
 
   if (error) {
-    return <div className={styles.error}>{error}</div>;
+    return (
+      <div className={styles.profileContainer}>
+        <div className={styles.error}>
+          <p>{error}</p>
+          <button onClick={() => window.location.reload()}>
+            {t('profile.retry')}
+          </button>
+        </div>
+      </div>
+    );
   }
 
   if (!user) {
-    return null;
+    return (
+      <div className={styles.profileContainer}>
+        <div className={styles.error}>
+          <p>{t('profile.noUser')}</p>
+          <button onClick={() => navigate('/login')}>
+            {t('profile.login')}
+          </button>
+        </div>
+      </div>
+    );
   }
 
   return (

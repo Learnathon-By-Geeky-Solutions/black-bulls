@@ -16,9 +16,10 @@
   padding: 2rem;
   border-radius: 8px;
   width: 90%;
-  max-width: 600px;
+  max-width: 500px;
   max-height: 90vh;
   overflow-y: auto;
+  position: relative;
 }
 
 .modalContent h2 {
@@ -34,6 +35,7 @@
   display: block;
   margin-bottom: 0.5rem;
   color: #666;
+  font-weight: 500;
 }
 
 .formGroup input,
@@ -48,6 +50,25 @@
 .formGroup textarea {
   min-height: 100px;
   resize: vertical;
+}
+
+.formGroup input:focus,
+.formGroup textarea:focus {
+  outline: none;
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+}
+
+.filePreview {
+  margin-top: 0.5rem;
+  text-align: center;
+}
+
+.previewImage {
+  max-width: 150px;
+  max-height: 150px;
+  border-radius: 4px;
+  object-fit: cover;
 }
 
 .modalActions {
@@ -73,7 +94,7 @@
 }
 
 .saveButton {
-  background: #007bff;
+  background: #4a90e2;
   border: none;
   color: white;
 }
@@ -83,5 +104,46 @@
 }
 
 .saveButton:hover {
-  background: #0056b3;
+  background: #357abd;
+}
+
+.cancelButton:disabled,
+.saveButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Error states */
+.formGroup input.error,
+.formGroup textarea.error {
+  border-color: #dc3545;
+}
+
+.errorMessage {
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+/* Loading state */
+.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .modalContent {
+    width: 95%;
+    padding: 1.5rem;
+  }
+
+  .modalActions {
+    flex-direction: column;
+  }
+
+  .cancelButton,
+  .saveButton {
+    width: 100%;
+  }
 } 
