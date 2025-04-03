@@ -1,51 +1,67 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
+import { useProfile } from '../../../hooks/user/profile/useProfile';
+import { toast } from 'react-toastify';
 import styles from './EditProfileModal.module.css';
 
-const EditProfileModal = ({ user, onClose, onSave }) => {
+const EditProfileModal = ({ user, onClose }) => {
   const { t } = useTranslation('profile');
+  const { updateProfile, isLoading, error } = useProfile();
   const [formData, setFormData] = useState({
     name: user.name || '',
     phone: user.phone || '',
     profile_picture: null,
-    user_details: {
-      designation: user.user_details?.designation || '',
-      institution: user.user_details?.institution || '',
-      dept: user.user_details?.dept || '',
-      address: user.user_details?.address || ''
-    }
+    designation: user.user_details?.designation || '',
+    institution: user.user_details?.institution || '',
+    dept: user.user_details?.dept || '',
+    address: user.user_details?.address || ''
   });
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name.includes('.')) {
-      const [parent, child] = name.split('.');
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        toast.error(t('profile.invalidFileType'));
+        return;
+      }
+      // Validate file size (2MB limit)
+      if (file.size > 2 * 1024 * 1024) {
+        toast.error(t('profile.fileTooLarge'));
+        return;
+      }
       setFormData(prev => ({
         ...prev,
-        [parent]: {
-          ...prev[parent],
-          [child]: value
-        }
-      }));
-    } else {
-      setFormData(prev => ({
-        ...prev,
-        [name]: value
+        profile_picture: file
       }));
     }
   };
 
-  const handleFileChange = (e) => {
-    setFormData(prev => ({
-      ...prev,
-      profile_picture: e.target.files[0]
-    }));
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSave(formData);
+    const result = await updateProfile(formData);
+    
+    if (result.success) {
+      toast.success(result.message);
+      onClose();
+    } else {
+      toast.error(result.message);
+    }
   };
 
   return (
@@ -60,6 +76,7 @@ const EditProfileModal = ({ user, onClose, onSave }) => {
               name="name"
               value={formData.name}
               onChange={handleChange}
+              required
             />
           </div>
 
@@ -70,6 +87,7 @@ const EditProfileModal = ({ user, onClose, onSave }) => {
               name="phone"
               value={formData.phone}
               onChange={handleChange}
+              required
             />
           </div>
 
@@ -80,14 +98,23 @@ const EditProfileModal = ({ user, onClose, onSave }) => {
               accept="image/*"
               onChange={handleFileChange}
             />
+            {formData.profile_picture && (
+              <div className={styles.filePreview}>
+                <img 
+                  src={URL.createObjectURL(formData.profile_picture)} 
+                  alt="Preview" 
+                  className={styles.previewImage}
+                />
+              </div>
+            )}
           </div>
 
           <div className={styles.formGroup}>
             <label>{t('profile.designation')}</label>
             <input
               type="text"
-              name="user_details.designation"
-              value={formData.user_details.designation}
+              name="designation"
+              value={formData.designation}
               onChange={handleChange}
             />
           </div>
@@ -96,8 +123,8 @@ const EditProfileModal = ({ user, onClose, onSave }) => {
             <label>{t('profile.institution')}</label>
             <input
               type="text"
-              name="user_details.institution"
-              value={formData.user_details.institution}
+              name="institution"
+              value={formData.institution}
               onChange={handleChange}
             />
           </div>
@@ -106,8 +133,8 @@ const EditProfileModal = ({ user, onClose, onSave }) => {
             <label>{t('profile.department')}</label>
             <input
               type="text"
-              name="user_details.dept"
-              value={formData.user_details.dept}
+              name="dept"
+              value={formData.dept}
               onChange={handleChange}
             />
           </div>
@@ -115,18 +142,27 @@ const EditProfileModal = ({ user, onClose, onSave }) => {
           <div className={styles.formGroup}>
             <label>{t('profile.address')}</label>
             <textarea
-              name="user_details.address"
-              value={formData.user_details.address}
+              name="address"
+              value={formData.address}
               onChange={handleChange}
             />
           </div>
 
           <div className={styles.modalActions}>
-            <button type="button" onClick={onClose} className={styles.cancelButton}>
+            <button 
+              type="button" 
+              onClick={onClose} 
+              className={styles.cancelButton}
+              disabled={isLoading}
+            >
               {t('profile.cancel')}
             </button>
-            <button type="submit" className={styles.saveButton}>
-              {t('profile.save')}
+            <button 
+              type="submit" 
+              className={styles.saveButton}
+              disabled={isLoading}
+            >
+              {isLoading ? t('profile.saving') : t('profile.save')}
             </button>
           </div>
         </form>
@@ -137,17 +173,14 @@ const EditProfileModal = ({ user, onClose, onSave }) => {
 
 EditProfileModal.propTypes = {
   user: PropTypes.shape({
-    name: PropTypes.string,
-    phone: PropTypes.string,
-    user_details: PropTypes.shape({
-      designation: PropTypes.string,
-      institution: PropTypes.string,
-      dept: PropTypes.string,
-      address: PropTypes.string
-    })
+    name: PropTypes.string.isRequired,
+    phone: PropTypes.string.isRequired,
+    designation: PropTypes.string,
+    institution: PropTypes.string,
+    dept: PropTypes.string,
+    address: PropTypes.string
   }).isRequired,
-  onClose: PropTypes.func.isRequired,
-  onSave: PropTypes.func.isRequired
+  onClose: PropTypes.func.isRequired
 };
 
 export default EditProfileModal; 
