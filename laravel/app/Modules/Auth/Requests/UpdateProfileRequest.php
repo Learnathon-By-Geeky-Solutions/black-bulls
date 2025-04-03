@@ -9,8 +9,8 @@ class UpdateProfileRequest extends FormRequest
 {
     use ValidationTrait;
 
-    private const STRING_MAX_255 = 'string|max:255';
-    private const IMAGE = 'image|mimes:jpeg,png,jpg,gif|max:2048';
+    private const STRING_MAX_255 = 'nullable|string|max:255';
+    private const IMAGE = 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048';
 
     public function rules(): array
     {
@@ -21,7 +21,7 @@ class UpdateProfileRequest extends FormRequest
             'designation' => self::STRING_MAX_255,
             'institution' => self::STRING_MAX_255,
             'dept' => self::STRING_MAX_255,
-            'address' => 'string|max:1000'
+            'address' => 'nullable|string|max:1000'
         ];
     }
 
