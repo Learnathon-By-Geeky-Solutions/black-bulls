@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Modules\Progress\Models\ProgressTracking;
 use App\Modules\Progress\Models\AnalyticsTracking;
+use App\Modules\Enrollment\Models\CourseEnrollment;
 
 class Course extends Model
 {

@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Modules\Course\Models\Course;
-use App\Modules\Course\Models\CourseEnrollment;
+use App\Modules\Enrollment\Models\CourseEnrollment;
 use App\Modules\Course\Models\CourseReview;
 use App\Modules\Progress\Models\ProgressTracking;
 use App\Modules\Progress\Models\AnalyticsTracking;

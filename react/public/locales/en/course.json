@@ -1,0 +1,8 @@
+{
+    "enrolledCourses": {
+        "myCourses": "My Courses",
+        "inProgress": "In Progress",
+        "completed": "Completed",
+        "noCourses": "You have no courses"
+    }
+}

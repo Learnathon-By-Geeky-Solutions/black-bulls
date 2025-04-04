@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Modules\Course\Models;
+namespace App\Modules\Enrollment\Models;
 
 use App\Models\User;
+use App\Modules\Course\Models\Course;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
