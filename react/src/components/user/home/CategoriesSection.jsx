@@ -32,7 +32,7 @@ const CategoriesSection = () => {
       </div>
       {categories?.length > 8 && (
         <div className={styles.viewAllContainer}>
-          <Link to="/categories" className={styles.viewAllButton}>
+          <Link to="/home/categories" className={styles.viewAllButton}>
             {t('home:categories.viewAll')}
           </Link>
         </div>

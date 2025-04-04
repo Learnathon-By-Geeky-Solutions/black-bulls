@@ -4,7 +4,7 @@ import styles from './Section.module.css';
 
 const CourseCard = ({ course }) => {
   return (
-    <Link to={`/courses/${course.id}`} className={styles.courseCard}>
+    <Link to={`/learn/courses/${course.id}`} className={styles.courseCard}>
       <div className={styles.courseImage}>
         <img src={course.thumbnail} alt={course.title} />
       </div>

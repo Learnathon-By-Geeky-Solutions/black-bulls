@@ -1,0 +1,178 @@
+.instructor-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.card-body {
+  padding: 2rem;
+}
+
+.card-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 2rem;
+}
+
+.instructor-profile {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.instructor-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #f3f4f6;
+}
+
+.instructor-avatar-fallback {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #f3f4f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.instructor-avatar-fallback svg {
+  width: 48px;
+  height: 48px;
+  color: #9ca3af;
+}
+
+.instructor-info {
+  flex: 1;
+}
+
+.instructor-info h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 0.5rem;
+}
+
+.instructor-info p {
+  color: #4b5563;
+  margin-bottom: 0.25rem;
+}
+
+.instructor-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.instructor-rating svg {
+  color: #f59e0b;
+}
+
+.course-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.course-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f9fafb;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.status-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #e0e7ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-icon svg {
+  color: #4f46e5;
+}
+
+.status-label {
+  font-weight: 500;
+  color: #1a1a1a;
+  margin-bottom: 0.25rem;
+}
+
+.status-value {
+  font-size: 0.875rem;
+  color: #4b5563;
+}
+
+.status-badge {
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.status-badge.published {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.status-badge.draft {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.course-metrics {
+  border-top: 1px solid #e5e7eb;
+  padding-top: 2rem;
+}
+
+.course-metrics h4 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 1.5rem;
+}
+
+.metric-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f9fafb;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.metric-item:last-child {
+  margin-bottom: 0;
+}
+
+.metric-item span:first-child {
+  color: #4b5563;
+}
+
+.metric-value {
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.original-price {
+  text-decoration: line-through;
+  color: #9ca3af;
+  margin-right: 0.75rem;
+}
+
+.discount-price {
+  color: #059669;
+} 

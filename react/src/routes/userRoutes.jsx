@@ -1,5 +1,6 @@
 import { lazy } from 'react';
 import MainLayout from '../components/user/layout/MainLayout';
+import CoursePage from '../pages/user/courses/CoursePage';
 
 const HomePage = lazy(() => import('../pages/user/home/HomePage'));
 const CourseListingPage = lazy(() => import('../pages/user/courses/CourseListingPage'));
@@ -14,6 +15,14 @@ const userRoutes = [
     children: [
       { path: '', element: <HomePage /> },
       { path: '/profile', element: <ProfilePage /> },
+    ]
+  },
+  {
+    path: '/learn',
+    element: <MainLayout />,
+    children: [
+      { path: '', element: <CourseListingPage /> },
+      { path: 'courses/:id', element: <CoursePage /> },
     ]
   },
   {
