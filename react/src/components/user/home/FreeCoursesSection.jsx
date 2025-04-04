@@ -15,7 +15,7 @@ const FreeCoursesSection = () => {
             titleKey="home:freeCourses.title"
             subtitleKey="home:freeCourses.subtitle"
             viewAllKey="home:freeCourses.viewAll"
-            viewAllLink="/courses/free-courses"
+            viewAllLink="/home/free-courses"
             courses={transformedCourses}
             loading={loading}
             error={error}
