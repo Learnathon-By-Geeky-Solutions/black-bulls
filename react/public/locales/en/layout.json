@@ -8,7 +8,8 @@
     "degrees": "Degrees",
     "profile": "Profile",
     "myLearning": "My Learning",
-    "logout": "Logout"
+    "logout": "Logout",
+    "myCourses": "My Courses"
   },
   "auth": {
     "login": "Log In",

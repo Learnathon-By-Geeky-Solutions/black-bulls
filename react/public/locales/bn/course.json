@@ -1,0 +1,8 @@
+{
+    "enrolledCourses": {
+        "myCourses": "আমার কোর্সসমূহ",
+        "inProgress": "চলমান",
+        "completed": "সম্পন্ন",
+        "noCourses": "আপনার কোনো কোর্স নেই"
+    }
+}

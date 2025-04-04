@@ -8,7 +8,8 @@
     "degrees": "ডিগ্রি",
     "profile": "প্রোফাইল",
     "myLearning": "আমার শিখন",
-    "logout": "লগআউট"
+    "logout": "লগআউট",
+    "myCourses": "আমার কোর্সসমূহ"
   },
   "auth": {
     "login": "লগইন",
