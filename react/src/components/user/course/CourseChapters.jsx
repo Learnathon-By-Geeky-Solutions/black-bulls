@@ -55,9 +55,11 @@ const CourseChapters = ({ sections }) => {
             <div className="sections-list">
               {sections?.map((section) => (
                 <div key={section.id} className="section-card">
-                  <div 
+                  <button 
                     className="section-header"
                     onClick={() => toggleSection(section.id)}
+                    aria-expanded={expandedSections[section.id]}
+                    aria-controls={`section-${section.id}`}
                   >
                     <div className="section-title">
                       <h3>{section.title}</h3>
@@ -69,7 +71,7 @@ const CourseChapters = ({ sections }) => {
                       icon={expandedSections[section.id] ? faChevronUp : faChevronDown} 
                       className="toggle-icon"
                     />
-                  </div>
+                  </button>
 
                   {expandedSections[section.id] && (
                     <div className="chapters-list">
