@@ -12,7 +12,7 @@ const TrendingCoursesSection = () => {
             titleKey="home:trendingCourses.title"
             subtitleKey="home:trendingCourses.subtitle"
             viewAllKey="home:trendingCourses.viewAll"
-            viewAllLink="/courses/trending"
+            viewAllLink="/home/trending-courses"
             courses={courses}
             loading={loading}
             error={error}

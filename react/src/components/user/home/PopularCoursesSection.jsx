@@ -12,7 +12,7 @@ const PopularCoursesSection = () => {
             titleKey="home:popularCourses.title"
             subtitleKey="home:popularCourses.subtitle"
             viewAllKey="home:popularCourses.viewAll"
-            viewAllLink="/courses/popular"
+            viewAllLink="/home/popular-courses"
             courses={courses}
             loading={loading}
             error={error}

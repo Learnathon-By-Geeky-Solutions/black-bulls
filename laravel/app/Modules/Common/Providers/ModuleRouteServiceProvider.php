@@ -12,7 +12,9 @@ class ModuleRouteServiceProvider extends ServiceProvider
         'Course',
         'Auth',
         'Content',
-        'Progress'
+        'Progress',
+        'Enrollment',
+        'Study',
         // Add other modules here
     ];
 

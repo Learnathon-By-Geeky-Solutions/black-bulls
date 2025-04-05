@@ -10,7 +10,9 @@ class ModuleDatabaseServiceProvider extends ServiceProvider
     protected $modules = [
         'Course',
         'Content',
-        'Progress'
+        'Progress',
+        'Enrollment',
+        'Study',
         // Add other modules here
     ];
     /**

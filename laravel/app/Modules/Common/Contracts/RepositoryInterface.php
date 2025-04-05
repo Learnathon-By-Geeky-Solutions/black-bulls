@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Collection;
 interface RepositoryInterface
 {
     public function getAll(array $columns = ['*'], array $conditions = [], array $relations = [], int $perPage = 15): LengthAwarePaginator;
+    public function getAllWithParameters(array $columns = ['*'], array $conditions = [], array $relations = [], array $orderBy = []): Collection;
     public function getById(int $id): Model;
     public function getByIdWithParameters(int $id, array $columns = ['*'], array $conditions = [], array $relations = []): Collection;
     public function create(array $data): Model;

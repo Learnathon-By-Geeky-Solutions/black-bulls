@@ -36,12 +36,27 @@ class Repository implements RepositoryInterface
         return $query->get();
     }
 
+    public function getAllWithParameters(array $columns = ['*'], array $conditions = [], array $relations = [], array $orderBy = []): Collection
+    {
+        $query = $this->model->select($columns)->with($relations);
+
+        foreach ($conditions as $field => $value) {
+            $query->where($field, $value);
+        }
+
+        foreach ($orderBy as $field => $direction) {
+            $query->orderBy($field, $direction);
+        }
+
+        return $this->executeQuery($query);
+    }
+
     public function getById(int $id): Model
     {
         return $this->model->findOrFail($id);
     }
 
-    public function getByIdWithParameters(int $id, array $columns = ['*'], array $conditions = [], array $relations = []): Collection
+    public function getByIdWithParameters(int $id, array $columns = ['*'], array $conditions = [], array $relations = [], $single = false): Collection
     {
         $query = $this->model->select($columns)->with($relations)->where('id', $id);
 
@@ -49,7 +64,7 @@ class Repository implements RepositoryInterface
             $query->where($field, $value);
         }
     
-        return $this->executeQuery($query, true);
+        return $this->executeQuery($query, $single);
     }
 
     public function create(array $data): Model

@@ -22,14 +22,14 @@ const CourseListingPage = () => {
 
   const getEndpoint = () => {
     switch (type) {
-      case 'free':
-        return '/courses/free';
-      case 'popular':
-        return '/courses/popular';
-      case 'trending':
-        return '/courses/trending';
+      case 'free-courses':
+        return '/home/free-courses';
+      case 'popular-courses':
+        return '/home/popular-courses';
+      case 'trending-courses':
+        return '/home/trending-courses';
       default:
-        return '/courses';
+        return '/home/free-courses';
     }
   };
 

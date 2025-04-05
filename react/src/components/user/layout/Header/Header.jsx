@@ -88,6 +88,9 @@ const Header = () => {
                 <button onClick={handleLogout}>
                   {t('nav.logout')}
                 </button>
+                <Link to="/learn/my-courses">
+                  {t('nav.myCourses')}
+                </Link>
               </div>
             </div>
           ) : (

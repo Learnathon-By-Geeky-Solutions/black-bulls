@@ -107,6 +107,17 @@ This project plan ensures the creation of a robust, scalable, and user-friendly 
 3. Write descriptive commit messages
 4. Create pull requests for review
 
+## API Development Guidelines
+1. Implement a new API endpoint within the existing Laravel/app/Modules/Course/ module, adhering to the current project structure and coding standards:
+First check related migrations to understand the database.
+Routing: Define the required API routes within the Course module.
+2. Model: Create required model if not exist
+3. Controller: Create controller inside the Course module. The controller should only handle the request and return a consistent JSON response, following the response format used by other controllers.
+4. Service: Implement the core business logic in a dedicated service class within the module. Use the constructor for dynamic binding of the Repository to the RepositoryInterface with the appropriate model instance.
+5. Repository: Use the existing shared RepositoryInterface from Modules/Common/Contracts/RepositoryInterface(implemented by Modules/Common/Repository/Repository.php) for all database operations, ensuring proper data layer abstraction.
+6. Ensure the implementation strictly follows the existing architectural pattern of controller → service → repository(common) and maintains consistency in response formatting across the application. Remember: don't create individual repository. use the existing shared RepositoryInterface.
+
+
 ## Resources
 - [Project Documentation](docs/)
 - [Development Setup](docs/setup.md)
