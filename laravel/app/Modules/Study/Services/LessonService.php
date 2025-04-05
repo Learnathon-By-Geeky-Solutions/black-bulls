@@ -42,19 +42,9 @@ class LessonService
                 ['tutorial', 'videos', 'mcqs', 'transcripts']
             );
             
-            return [
-                'is_success' => true,
-                'message' => 'Lesson retrieved successfully',
-                'data' => $lesson,
-                'status' => 200
-            ];
+            return $this->successResponse('Lesson retrieved successfully', $lesson);
         } catch (Exception $e) {
-            return [
-                'is_success' => false,
-                'message' => 'Failed to retrieve lesson: ' . $e->getMessage(),
-                'data' => null,
-                'status' => 500
-            ];
+            return $this->errorResponse('Failed to retrieve lesson', $e);
         }
     }
 
@@ -62,7 +52,7 @@ class LessonService
     {
         try {
             $repository = $item.'Repository';
-            $mcqs = $this->$repository->getAll(
+            $items = $this->$repository->getAll(
                 ['*'],
                 [
                     $item.'able_type' => 'App\Modules\Course\Models\Lesson',
@@ -70,19 +60,9 @@ class LessonService
                 ]
             );
             
-            return [
-                'is_success' => true,
-                'message' => 'Lesson ' .$item. 's retrieved successfully',
-                'data' => $mcqs,
-                'status' => 200
-            ];
+            return $this->successResponse("Lesson {$item}s retrieved successfully", $items);
         } catch (Exception $e) {
-            return [
-                'is_success' => false,
-                'message' => 'Failed to retrieve lesson ' .$item. 's: ' . $e->getMessage(),
-                'data' => null,
-                'status' => 500
-            ];
+            return $this->errorResponse("Failed to retrieve lesson {$item}s", $e);
         }
     }
 
@@ -119,89 +99,53 @@ class LessonService
             
             DB::commit();
             
-            return [
-                'is_success' => true,
-                'message' => 'Quiz submitted successfully',
-                'data' => [
-                    'score' => $totalScore,
-                    'max_score' => $maxScore,
-                    'percentage' => $percentage
-                ],
-                'status' => 200
-            ];
+            return $this->successResponse('Quiz submitted successfully', [
+                'score' => $totalScore,
+                'max_score' => $maxScore,
+                'percentage' => $percentage
+            ]);
         } catch (Exception $e) {
             DB::rollBack();
-            return [
-                'is_success' => false,
-                'message' => 'Failed to submit quiz: ' . $e->getMessage(),
-                'data' => null,
-                'status' => 500
-            ];
+            return $this->errorResponse('Failed to submit quiz', $e);
+        }
+    }
+
+    private function createUserProgress(int $lessonId, array $data): void
+    {
+        $userId = Auth::id();
+        $this->userProgressRepository->create(array_merge([
+            'user_id' => $userId,
+            'lesson_id' => $lessonId
+        ], $data));
+    }
+
+    private function completeContent(int $lessonId, string $type): array
+    {
+        try {
+            DB::beginTransaction();
+            
+            $field = $type === 'lesson' ? 'is_completed' : 'quiz_completed';
+            $this->createUserProgress($lessonId, [$field => true]);
+            
+            DB::commit();
+            
+            $message = $type === 'lesson' ? 'Lesson marked as completed' : 'Quiz marked as completed';
+            return $this->successResponse($message);
+        } catch (Exception $e) {
+            DB::rollBack();
+            $message = $type === 'lesson' ? 'Failed to complete lesson' : 'Failed to complete quiz';
+            return $this->errorResponse($message, $e);
         }
     }
 
     public function completeLesson(int $lessonId): array
     {
-        try {
-            DB::beginTransaction();
-            
-            $userId = Auth::id();
-            
-            $this->userProgressRepository->create([
-                'user_id' => $userId,
-                'lesson_id' => $lessonId,
-                'is_completed' => true
-            ]);
-            
-            DB::commit();
-            
-            return [
-                'is_success' => true,
-                'message' => 'Lesson marked as completed',
-                'data' => null,
-                'status' => 200
-            ];
-        } catch (Exception $e) {
-            DB::rollBack();
-            return [
-                'is_success' => false,
-                'message' => 'Failed to complete lesson: ' . $e->getMessage(),
-                'data' => null,
-                'status' => 500
-            ];
-        }
+        return $this->completeContent($lessonId, 'lesson');
     }
 
     public function completeQuiz(int $lessonId): array
     {
-        try {
-            DB::beginTransaction();
-            
-            $userId = Auth::id();
-            
-            $this->userProgressRepository->create([
-                'user_id' => $userId,
-                'lesson_id' => $lessonId,
-                'quiz_completed' => true
-            ]);
-            
-            DB::commit();
-            
-            return [
-                'is_success' => true,
-                'message' => 'Quiz marked as completed',
-                'data' => null,
-                'status' => 200
-            ];
-        } catch (Exception $e) {
-            DB::rollBack();
-            return [
-                'is_success' => false,
-                'message' => 'Failed to complete quiz: ' . $e->getMessage(),
-                'data' => null,
-                'status' => 500
-            ];
-        }
+        return $this->completeContent($lessonId, 'quiz');
     }
 
     public function getChapterLessons(int $chapterId): array
@@ -213,19 +157,29 @@ class LessonService
                 ['tutorial', 'videos', 'mcqs', 'transcripts']
             );
             
-            return [
-                'is_success' => true,
-                'message' => 'Chapter lessons retrieved successfully',
-                'data' => $lessons,
-                'status' => 200
-            ];
+            return $this->successResponse('Chapter lessons retrieved successfully', $lessons);
         } catch (Exception $e) {
-            return [
-                'is_success' => false,
-                'message' => 'Failed to retrieve chapter lessons: ' . $e->getMessage(),
-                'data' => null,
-                'status' => 500
-            ];
+            return $this->errorResponse('Failed to retrieve chapter lessons', $e);
         }
+    }
+
+    private function successResponse(string $message, $data = null): array
+    {
+        return [
+            'is_success' => true,
+            'message' => $message,
+            'data' => $data,
+            'status' => 200
+        ];
+    }
+
+    private function errorResponse(string $message, Exception $e): array
+    {
+        return [
+            'is_success' => false,
+            'message' => $message . ': ' . $e->getMessage(),
+            'data' => null,
+            'status' => 500
+        ];
     }
 }
