@@ -15,6 +15,7 @@ use App\Modules\Content\Models\Transcript;
 use App\Modules\Progress\Models\ProgressTracking;
 use App\Modules\Content\Models\Video;
 use App\Modules\Progress\Models\AnalyticsTracking;
+use App\Modules\Study\Models\UserProgress;
 
 class Lesson extends Model
 {
@@ -72,6 +73,11 @@ class Lesson extends Model
     public function analytics(): MorphMany
     {
         return $this->morphMany(AnalyticsTracking::class, 'trackable');
+    }
+
+    public function userProgress()
+    {
+        return $this->hasMany(UserProgress::class, 'lesson_id');
     }
 
     /**
