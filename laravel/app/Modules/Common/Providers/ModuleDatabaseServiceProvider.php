@@ -12,6 +12,7 @@ class ModuleDatabaseServiceProvider extends ServiceProvider
         'Content',
         'Progress',
         'Enrollment',
+        'Study',
         // Add other modules here
     ];
     /**
