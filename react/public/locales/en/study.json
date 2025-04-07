@@ -1,0 +1,22 @@
+{
+    "course": {
+        "sections": "Sections",
+        "hours": "Hours",
+        "updated": "Updated",
+        "no_sections": "No sections available for this course",
+        "content": "Course Content",
+        "lessons_total": "lessons total",
+        "status": {
+            "published": "Published",
+            "draft": "Draft"
+        },
+        "progress": {
+            "complete": "Complete"
+        }
+    },
+    "loading": "Loading...",
+    "error": {
+        "fetch_course": "Failed to fetch course data",
+        "fetch_sections": "Failed to fetch course sections"
+    }
+} 
