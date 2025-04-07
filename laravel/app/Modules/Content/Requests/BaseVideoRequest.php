@@ -15,7 +15,7 @@ class BaseVideoRequest extends FormRequest
         $existsRule = $videoableType ? "exists:{$videoableType},id" : '';
 
         return [
-            'videoable_type' => 'nullable|string|in:lessons,chapters,courses',
+            'videoable_type' => 'nullable|string',
             'videoable_id' => 'nullable|integer|' . $existsRule,
             'description' => 'nullable|string',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // 2MB max

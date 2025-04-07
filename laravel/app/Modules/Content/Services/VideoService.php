@@ -14,8 +14,8 @@ class VideoService
     protected $videoRepository;
     protected $fileHandleService;
     private const VIDEO_NOT_FOUND = 'Video not found';
-    private const VIDEO_PATH = 'videos';
-    private const THUMBNAIL_PATH = 'thumbnails';
+    private const VIDEO_PATH = 'videos/videos';
+    private const THUMBNAIL_PATH = 'thumbnails/videos';
 
     public function __construct(FileHandleService $fileHandleService)
     {
