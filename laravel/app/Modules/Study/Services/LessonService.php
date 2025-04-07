@@ -69,9 +69,31 @@ class LessonService
     public function submitQuizAnswers(int $lessonId, array $answers): array
     {
         try {
+            $userId = Auth::id();
+            
+            // Check if quiz has already been taken
+            $existingProgress = $this->userProgressRepository->getAll(
+                ['*'],
+                [
+                    'user_id' => $userId,
+                    'lesson_id' => $lessonId,
+                    'quiz_completed' => true
+                ],
+                [],
+                1
+            )->first();
+            
+            if ($existingProgress) {
+                return $this->successResponse('Quiz already completed', [
+                    'score' => $existingProgress->quiz_score,
+                    'max_score' => 100,
+                    'percentage' => $existingProgress->quiz_score,
+                    'message' => 'You have already completed this quiz'
+                ]);
+            }
+            
             DB::beginTransaction();
             
-            $userId = Auth::id();
             $mcqs = $this->mcqRepository->getAll(['*'], [
                 'mcqable_type' => Lesson::class,
                 'mcqable_id' => $lessonId
