@@ -1,0 +1,51 @@
+.videoContainer {
+    margin-bottom: 2rem;
+}
+
+.videoContainer h3 {
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.videoList {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.videoItem {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.video {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background-color: #000;
+}
+
+.videoInfo {
+    padding: 1rem;
+}
+
+.videoInfo h4 {
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.videoInfo p {
+    color: #666;
+    margin: 0;
+}
+
+.noVideo {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+}
+
+.noVideo h3 {
+    margin-bottom: 1rem;
+    color: #333;
+} 
