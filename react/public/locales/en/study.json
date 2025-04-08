@@ -18,5 +18,27 @@
     "error": {
         "fetch_course": "Failed to fetch course data",
         "fetch_sections": "Failed to fetch course sections"
-    }
+    },
+    "selectContent": "Select a lesson or quiz to begin",
+    "selectContentMessage": "Choose from the sidebar to start learning",
+    "questionProgress": "Question {{current}} of {{total}}",
+    "quizProgress": "Progress: {{current}}/{{total}} questions",
+    "quizComplete": "Quiz completed!",
+    "quizScore": "Your score: {{score}}%",
+    "quizRetake": "Retake Quiz",
+    "quizReview": "Review Answers",
+    "quizStart": "Start Quiz",
+    "quizSubmit": "Submit Quiz",
+    "quizNext": "Next Question",
+    "quizPrevious": "Previous Question",
+    "quizTimeRemaining": "Time remaining: {{time}}",
+    "quizInstructions": "Read each question carefully and select the best answer. You can navigate between questions using the buttons below.",
+    "quizWarning": "Once you submit, you cannot change your answers.",
+    "quizSuccess": "Great job! You've completed the quiz.",
+    "quizError": "An error occurred while submitting the quiz. Please try again.",
+    "quiz": "Quiz",
+    "pointsEarned": "Points Earned: {{earned}}/{{total}}",
+    "quizAlreadyCompleted": "You have already completed this quiz",
+    "question": "Question",
+    "correctAnswer": "Correct Answer"
 } 
