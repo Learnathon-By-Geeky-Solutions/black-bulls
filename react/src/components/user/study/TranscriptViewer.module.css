@@ -1,0 +1,62 @@
+.transcriptContainer {
+    margin-bottom: 2rem;
+}
+
+.transcriptContainer h3 {
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.transcriptList {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.transcriptItem {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+}
+
+.transcriptItem h4 {
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.transcriptContent {
+    margin-bottom: 1.5rem;
+    color: #333;
+    line-height: 1.6;
+}
+
+.timestamps {
+    border-top: 1px solid #eee;
+    padding-top: 1rem;
+}
+
+.timestamp {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.time {
+    color: #666;
+    min-width: 100px;
+}
+
+.text {
+    color: #333;
+}
+
+.noTranscript {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+}
+
+.noTranscript h3 {
+    margin-bottom: 1rem;
+    color: #333;
+} 
