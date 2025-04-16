@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('course_id')->constrained('courses')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('order_id')->nullable()->constrained('orders')->onDelete('cascade');
             $table->decimal('price_paid', 8, 2);
             $table->enum('status', ['active', 'completed', 'dropped'])->default('active');
             $table->timestamp('completed_at')->nullable();

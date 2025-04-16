@@ -4,5 +4,16 @@
         "inProgress": "In Progress",
         "completed": "Completed",
         "noCourses": "You have no courses"
+    },
+    "courseDetails": {
+        "courseTitle": "Course Title",
+        "courseDescription": "Course Description",
+        "instructor": "Instructor",
+        "progress": "Progress",
+        "lessons": "Lessons",
+        "quizzes": "Quizzes",
+        "certificate": "Certificate",
+        "startCourse": "Start Course",
+        "enrollCourse": "Enroll Now"
     }
 }
