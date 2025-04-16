@@ -1,10 +1,20 @@
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { setCourse } from '../../../redux/slices/courseSlice';
 import styles from './Section.module.css';
+import { useTranslation } from 'react-i18next';
 
 const CourseCard = ({ course }) => {
+  const dispatch = useDispatch();
+  const { t } = useTranslation('course')
+
+  const handleEnrollClick = () => {
+    dispatch(setCourse(course)); // Store course details in Redux
+  };
+
   return (
-    <Link to={`/learn/courses/${course.id}`} className={styles.courseCard}>
+    <Link to={ course.showEnrollButton === false ? `/study/courses/${course.id}` : `/learn/courses/${course.id}`} className={styles.courseCard}>
       <div className={styles.courseImage}>
         <img src={course.thumbnail} alt={course.title} />
       </div>
@@ -18,12 +28,33 @@ const CourseCard = ({ course }) => {
             </span>
           ))}
         </div>
-        <div className={styles.instructor}>
-          Instructor: {course.instructor?.name}
-        </div>
-        <div className={styles.price}>
-          {course.price === 0 ? 'Free' : `$${course.price}`}
-        </div>
+
+        { course.showEnrollButton === false ? (
+          <Link
+            to={`/study/courses/${course.id}`}
+            className={styles.enrollButton}
+          >
+            {t('courseDetails.startCourse')}
+          </Link>
+        ):(
+          <>
+            <div className={styles.instructor}>
+              Instructor: {course.instructor?.name}
+            </div>
+            <div className={styles.price}>
+              {course.price === 0 ? 'Free' : `$${course.price}`}
+            </div>
+            <Link
+              to="/payments/checkout"
+              className={styles.enrollButton}
+              onClick={handleEnrollClick} // Dispatch Redux action on click
+            >
+              {t('courseDetails.enrollCourse')}
+            </Link>
+          </>
+        )}
+
+
       </div>
     </Link>
   );
@@ -42,8 +73,9 @@ CourseCard.propTypes = {
     instructor: PropTypes.shape({
       name: PropTypes.string.isRequired
     }),
-    price: PropTypes.number.isRequired
+    price: PropTypes.number.isRequired,
+    showEnrollButton: PropTypes.bool,
   }).isRequired
 };
 
-export default CourseCard; 
+export default CourseCard;
