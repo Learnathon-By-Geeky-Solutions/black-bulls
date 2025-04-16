@@ -10,6 +10,8 @@ const EnrolledCoursesPage = lazy(() => import('../pages/user/courses/EnrolledCou
 const LoginPage = lazy(() => import('../pages/user/auth/LoginPage'));
 const RegisterPage = lazy(() => import('../pages/user/auth/RegisterPage'));
 const ProfilePage = lazy(() => import('../pages/user/profile/ProfilePage'));
+const PaymentFrom = lazy(() => import('../components/payment/PaymentForm'));
+const PaymentSuccess = lazy(() => import('../pages/payment/PaymentSuccess'));
 
 const userRoutes = [
   {
@@ -48,7 +50,15 @@ const userRoutes = [
   {
     path: '/register',
     element: <RegisterPage />
-  }
+  },
+  {
+    path: '/payments',
+    element: <MainLayout />,
+    children: [
+      { path: 'checkout', element: <PaymentFrom /> },
+      { path: 'success', element: <PaymentSuccess /> }
+    ]
+  },
 ];
 
 export default userRoutes; 
