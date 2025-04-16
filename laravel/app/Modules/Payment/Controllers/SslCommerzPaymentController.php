@@ -117,11 +117,11 @@ class SslCommerzPaymentController extends Controller
 
         return [
             'is_success' => true,
-            'message' => 'Transaction is successfully Completed',
-            'data' => ['redirect_url' => env('FRONTEND_URL', 'http://localhost:3000') . '/learn/my-courses'],
+            'message' => 'Course enrolled successfully.',
+            'data' => [
+                'redirect_url' => env('FRONTEND_URL', 'http://localhost:3000') . '/learn/my-courses'
+            ],
             'status' => 200
         ];
-
     }
 }
-
