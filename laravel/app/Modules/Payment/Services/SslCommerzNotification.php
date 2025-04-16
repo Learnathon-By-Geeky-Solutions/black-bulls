@@ -13,7 +13,6 @@ class SslCommerzNotification extends AbstractSslCommerz
     private $failedUrl;
     private $ipnUrl;
     private $error;
-    private $sslc_data;
 
     /**
      * SslCommerzNotification constructor.
@@ -38,88 +37,74 @@ class SslCommerzNotification extends AbstractSslCommerz
 
 
     # VALIDATE SSLCOMMERZ TRANSACTION
-    protected function validate($merchant_trans_id, $merchant_trans_amount, $merchant_trans_currency, $post_data)
+    protected function validate($merchantTransId, $merchantTransAmount, $merchantTransCurrency, $postData)
     {
-        # MERCHANT SYSTEM INFO
-        if (!empty($merchant_trans_id) && !empty($merchant_trans_amount)) {
-
-            # CALL THE FUNCTION TO CHECK THE RESULT
-            $post_data['store_id'] = $this->getStoreId();
-            $post_data['store_pass'] = $this->getStorePassword();
-
-            $val_id = urlencode($post_data['val_id']);
-            $store_id = urlencode($this->getStoreId());
-            $store_passwd = urlencode($this->getStorePassword());
-            $requested_url = ($this->config['apiDomain'] . $this->config['apiUrl']['order_validate'] . "?val_id=" . $val_id . "&store_id=" . $store_id . "&store_passwd=" . $store_passwd . "&v=1&format=json");
-
-            $handle = curl_init();
-            curl_setopt($handle, CURLOPT_URL, $requested_url);
-            curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
-
-            if ($this->config['connect_from_localhost']) {
-                curl_setopt($handle, CURLOPT_SSL_VERIFYHOST, 0);
-                curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, 0);
-            } else {
-                curl_setopt($handle, CURLOPT_SSL_VERIFYHOST, 2);
-                curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, 2);
-            }
-
-
-            $result = curl_exec($handle);
-
-            $code = curl_getinfo($handle, CURLINFO_HTTP_CODE);
-
-            if ($code == 200 && !(curl_errno($handle))) {
-
-                # TO CONVERT AS ARRAY
-                # $result = json_decode($result, true);
-                # $status = $result['status'];
-
-                # TO CONVERT AS OBJECT
-                $result = json_decode($result);
-                $this->sslc_data = $result;
-
-                # TRANSACTION INFO
-                $status = $result->status;
-                $tran_id = $result->tran_id;
-                $amount = $result->amount;
-                $currency_type = $result->currency_type;
-                $currency_amount = $result->currency_amount;
-
-                # GIVE SERVICE
-                if ($status == "VALID" || $status == "VALIDATED") {
-                    if ($merchant_trans_currency == "BDT") {
-                        if (trim($merchant_trans_id) == trim($tran_id) && (abs($merchant_trans_amount - $amount) < 1) && trim($merchant_trans_currency) == trim('BDT')) {
-                            return true;
-                        } else {
-                            # DATA TEMPERED
-                            $this->error = "Data has been tempered";
-                            return false;
-                        }
-                    } else {
-                        if (trim($merchant_trans_id) == trim($tran_id) && (abs($merchant_trans_amount - $currency_amount) < 1) && trim($merchant_trans_currency) == trim($currency_type)) {
-                            return true;
-                        } else {
-                            # DATA TEMPERED
-                            $this->error = "Data has been tempered";
-                            return false;
-                        }
-                    }
-                } else {
-                    # FAILED TRANSACTION
-                    $this->error = "Failed Transaction";
-                    return false;
-                }
-            } else {
-                # Failed to connect with SSLCOMMERZ
-                $this->error = "Faile to connect with SSLCOMMERZ";
-                return false;
-            }
-        } else {
-            # INVALID DATA
+        if (empty($merchantTransId) || empty($merchantTransAmount)) {
             $this->error = "Invalid data";
             return false;
         }
+
+        $postData['store_id'] = $this->getStoreId();
+        $postData['store_pass'] = $this->getStorePassword();
+
+        $requestedUrl = $this->buildValidationUrl($postData);
+        $result = $this->executeCurlRequest($requestedUrl);
+
+        if (!$result) {
+            $this->error = "Failed to connect with SSLCOMMERZ";
+            return false;
+        }
+
+        return $this->processValidationResult($result, $merchantTransId, $merchantTransAmount, $merchantTransCurrency);
+    }
+
+    private function buildValidationUrl($postData)
+    {
+        $valId = urlencode($postData['val_id']);
+        $storeId = urlencode($this->getStoreId());
+        $storePasswd = urlencode($this->getStorePassword());
+
+        return $this->config['apiDomain'] . $this->config['apiUrl']['order_validate'] . "?val_id=" . $valId . "&store_id=" . $storeId . "&store_passwd=" . $storePasswd . "&v=1&format=json";
+    }
+
+    private function executeCurlRequest($url)
+    {
+        $handle = curl_init();
+        curl_setopt($handle, CURLOPT_URL, $url);
+        curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($handle, CURLOPT_SSL_VERIFYHOST, 2);
+        curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, true);
+
+        $result = curl_exec($handle);
+        curl_close($handle);
+
+        return $result ? json_decode($result) : null;
+    }
+
+    private function processValidationResult($result, $merchantTransId, $merchantTransAmount, $merchantTransCurrency)
+    {
+        if ($result->status !== "VALID" && $result->status !== "VALIDATED") {
+            $this->error = "Failed Transaction";
+            return false;
+        }
+
+        $isValid = $this->validateTransactionData($result, $merchantTransId, $merchantTransAmount, $merchantTransCurrency);
+
+        if (!$isValid) {
+            $this->error = "Data has been tempered";
+            return false;
+        }
+
+        return true;
+    }
+
+    private function validateTransactionData($result, $merchantTransId, $merchantTransAmount, $merchantTransCurrency)
+    {
+        if ($merchantTransCurrency === "BDT") {
+            return trim($merchantTransId) === trim($result->tran_id) && abs($merchantTransAmount - $result->amount) < 1;
+        }
+
+        return trim($merchantTransId) === trim($result->tran_id) && abs($merchantTransAmount - $result->currency_amount) < 1 && trim($merchantTransCurrency) === trim($result->currency_type);
     }
 
     # FUNCTION TO CHECK HASH VALUE
