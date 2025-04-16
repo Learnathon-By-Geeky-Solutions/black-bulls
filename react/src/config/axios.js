@@ -17,6 +17,7 @@ export const privateApi = axios.create({
         'Accept': 'application/json',
         'Content-Type': 'application/json',
     },
+    withCredentials: true, // Enable credentials for cross-origin requests
 });
 
 // Add a request interceptor to privateApi to add auth token
@@ -47,4 +48,4 @@ privateApi.interceptors.response.use(
 export default {
     public: publicApi,
     private: privateApi,
-}; 
+};
