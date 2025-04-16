@@ -5,7 +5,7 @@ import styles from './EnrolledCoursesPage.module.css';
 import { useTranslation } from 'react-i18next';
 
 const EnrolledCoursesPage = () => {
-    const [activeTab, setActiveTab] = useState('IN_PROGRESS');
+    const [activeTab, setActiveTab] = useState('active');
     const { data, isLoading, error } = useEnrolledCourses(activeTab);
     const { t } = useTranslation('course');
 
@@ -25,14 +25,14 @@ const EnrolledCoursesPage = () => {
                 <h1>{t('enrolledCourses.myCourses')}</h1>
                 <div className={styles.tabs}>
                     <button
-                        className={`${styles.tab} ${activeTab === 'IN_PROGRESS' ? styles.active : ''}`}
-                        onClick={() => setActiveTab('IN_PROGRESS')}
+                        className={`${styles.tab} ${activeTab === 'active' ? styles.active : ''}`}
+                        onClick={() => setActiveTab('active')}
                     >
                         {t('enrolledCourses.inProgress')}
                     </button>
                     <button
-                        className={`${styles.tab} ${activeTab === 'COMPLETED' ? styles.active : ''}`}
-                        onClick={() => setActiveTab('COMPLETED')}
+                        className={`${styles.tab} ${activeTab === 'completed' ? styles.active : ''}`}
+                        onClick={() => setActiveTab('completed')}
                     >
                         {t('enrolledCourses.completed')}
                     </button>
@@ -46,7 +46,7 @@ const EnrolledCoursesPage = () => {
             ) : (
                 <div className={styles.courseGrid}>
                     {courses.map((course) => (
-                        <CourseCard key={course.id} course={course} />
+                        <CourseCard key={course.id} course={{...course, showEnrollButton: false}} />
                     ))}
                 </div>
             )}

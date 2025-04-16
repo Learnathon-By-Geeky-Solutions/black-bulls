@@ -4,5 +4,16 @@
         "inProgress": "চলমান",
         "completed": "সম্পন্ন",
         "noCourses": "আপনার কোনো কোর্স নেই"
+    },
+    "courseDetails": {
+        "courseTitle": "কোর্সের শিরোনাম",
+        "courseDescription": "কোর্সের বর্ণনা",
+        "instructor": "শিক্ষক",
+        "progress": "অগ্রগতি",
+        "lessons": "পাঠ",
+        "quizzes": "কুইজ",
+        "certificate": "সার্টিফিকেট",
+        "startCourse": "কোর্স শুরু করুন",
+        "enrollCourse": "নিবন্ধন করুন"
     }
 }

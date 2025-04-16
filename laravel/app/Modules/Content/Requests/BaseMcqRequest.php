@@ -15,7 +15,7 @@ class BaseMcqRequest extends FormRequest
         $existsRule = $mcqableType ? "exists:{$mcqableType},id" : '';
 
         return [
-            'mcqable_type' => 'required|string|in:lessons,chapters,courses',
+            'mcqable_type' => 'required|string',
             'mcqable_id' => 'required|integer|' . $existsRule,
             'is_published' => 'nullable|boolean',
             'points' => 'nullable|integer|min:1',

@@ -7,7 +7,5 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->group(function(){
     Route::prefix('enrollments')->group(function(){
         Route::get('/my-courses/{status}', [EnrollmentController::class, 'getEnrolledCourses']);
-        Route::post('/{courseId}', [EnrollmentController::class, 'enroll']);
-        Route::delete('/{courseId}', [EnrollmentController::class, 'unenroll']);
     });
 });

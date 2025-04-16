@@ -15,6 +15,7 @@ class ModuleRouteServiceProvider extends ServiceProvider
         'Progress',
         'Enrollment',
         'Study',
+        'Payment',
         // Add other modules here
     ];
 

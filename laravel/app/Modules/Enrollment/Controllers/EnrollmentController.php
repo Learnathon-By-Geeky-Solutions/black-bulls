@@ -16,9 +16,6 @@ class EnrollmentController extends Controller
         $this->enrollmentService = $enrollmentService;
     }
 
-    /**
-     * Get all courses enrolled by the authenticated user
-     */
     public function getEnrolledCourses(string $status): JsonResponse
     {
         $response = $this->enrollmentService->getEnrolledCourses($status);
@@ -27,29 +24,5 @@ class EnrollmentController extends Controller
             'message' => $response['message'],
             'data' => $response['data']
         ], $response['status']);
-    }
-
-    /**
-     * Enroll the authenticated user in a course
-     */
-    public function enroll(Request $request, int $courseId): JsonResponse
-    {
-        $enrollment = $this->enrollmentService->enroll($courseId);
-        return response()->json([
-            'status' => 'success',
-            'data' => $enrollment
-        ], 201);
-    }
-
-    /**
-     * Unenroll the authenticated user from a course
-     */
-    public function unenroll(int $courseId): JsonResponse
-    {
-        $this->enrollmentService->unenroll($courseId);
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Successfully unenrolled from the course'
-        ]);
     }
 }
