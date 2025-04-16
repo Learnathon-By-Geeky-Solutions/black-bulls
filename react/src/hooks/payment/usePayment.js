@@ -26,6 +26,7 @@ export const usePayment = () => {
             else {
                 setError(response.data?.message || 'Unexpected error occurred during payment initiation.');
             }
+            return response.data;
         } catch (err) {
             console.error('Payment API Error:', err); // Log the error for debugging
             setError(err.response?.data?.message || 'Payment initiation failed. Please try again later.');

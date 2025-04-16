@@ -44,14 +44,19 @@ const PaymentForm = () => {
         console.log('Submitting payment with payload:', payload);
     
         const response = await initiatePayment(payload);
+
+        if (!response) {
+            console.error('No response received from payment API.');
+            return;
+        }
     
         if (response?.GatewayPageURL) {
             // Navigate to the payment gateway URL
             window.location.href = response.GatewayPageURL;
         } 
-        else if (response.data.is_success && response.data.data?.redirect_url) {
+        else if (response?.is_success && response?.data?.redirect_url) {
             // Redirect to the provided URL
-            window.location.href = response.data.data.redirect_url;
+            window.location.href = response.data.redirect_url;
         }
         else {
             console.error('Failed to initiate payment:', response);
