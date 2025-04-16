@@ -14,4 +14,3 @@ Route::middleware('auth:api')->group(function () {
     
     Route::post('/ipn', [SslCommerzPaymentController::class, 'ipn']);
 });
-
