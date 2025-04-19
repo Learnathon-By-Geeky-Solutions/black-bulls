@@ -1,0 +1,59 @@
+.admin-sidebar {
+    background-color: #343a40;
+    color: #fff;
+    height: 100vh;
+    transition: width 0.3s ease;
+    overflow: hidden;
+    width: 250px; /* Merged duplicate selectors */
+}
+
+.admin-sidebar.collapsed {
+    width: 80px;
+}
+
+.sidebar-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-item {
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+}
+
+.menu-item .icon {
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+.menu-item .label {
+    font-size: 1rem;
+}
+
+.menu-item a {
+    text-decoration: none;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.menu-item a.active {
+    background-color: #495057;
+    border-radius: 4px;
+}
+
+.sidebar-logo {
+    text-align: center;
+    padding: 10px 0;
+    background-color: #495057;
+}
+
+.sidebar-logo .logo {
+    max-width: 60px;
+    height: auto;
+    object-fit: contain;
+    border-radius: 50%;
+}
