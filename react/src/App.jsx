@@ -5,6 +5,7 @@ import { PersistGate } from 'redux-persist/integration/react'
 import { persistor } from './redux/store'
 import 'react-toastify/dist/ReactToastify.css'
 import userRoutes from './routes/userRoutes.jsx'
+import adminRoutes from './routes/adminRoutes.jsx'
 import Loading from './components/common/Loading/Loading'
 import { setNavigate } from './config/authInterceptor'
 
@@ -20,6 +21,21 @@ const App = () => {
       <Suspense fallback={<Loading />}>
         <Routes>
           {userRoutes.map((route) => (
+            <Route
+              key={route.path}
+              path={route.path}
+              element={route.element}
+            >
+              {route.children?.map((child) => (
+                <Route
+                  key={`${route.path}-${child.path}`}
+                  path={child.path}
+                  element={child.element}
+                />
+              ))}
+            </Route>
+          ))}
+          {adminRoutes.map((route) => (
             <Route
               key={route.path}
               path={route.path}

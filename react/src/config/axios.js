@@ -1,12 +1,11 @@
 import axios from 'axios';
-import { handleError } from './authInterceptor';
 
 // Public API instance for endpoints that don't require authentication
 export const publicApi = axios.create({
     baseURL: import.meta.env.VITE_API_URL || '/api',
     headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
     },
 });
 
@@ -15,7 +14,7 @@ export const privateApi = axios.create({
     baseURL: import.meta.env.VITE_API_URL || '/api',
     headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
     },
     withCredentials: true, // Enable credentials for cross-origin requests
 });
@@ -30,19 +29,23 @@ privateApi.interceptors.request.use(
         return config;
     },
     (error) => {
-        return Promise.reject(error);
+        return Promise.reject(error instanceof Error ? error : new Error(error));
     }
 );
 
 // Add response interceptors to handle common errors
 publicApi.interceptors.response.use(
     (response) => response,
-    handleError
+    (error) => {
+        return Promise.reject(error instanceof Error ? error : new Error(error));
+    }
 );
 
 privateApi.interceptors.response.use(
     (response) => response,
-    handleError
+    (error) => {
+        return Promise.reject(error instanceof Error ? error : new Error(error));
+    }
 );
 
 export default {
