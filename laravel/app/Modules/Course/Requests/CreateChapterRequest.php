@@ -20,7 +20,6 @@ class CreateChapterRequest extends FormRequest
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'order' => 'required|integer|min:0',
-            'is_published' => 'required|boolean',
         ];
     }
 
@@ -34,8 +33,6 @@ class CreateChapterRequest extends FormRequest
             'order.required' => 'Chapter order is required',
             'order.integer' => 'Order must be a whole number',
             'order.min' => 'Order must be at least 0',
-            'is_published.required' => 'Publication status is required',
-            'is_published.boolean' => 'Publication status must be true or false',
         ];
     }
 
