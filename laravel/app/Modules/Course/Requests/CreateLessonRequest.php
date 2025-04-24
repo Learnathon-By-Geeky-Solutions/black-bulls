@@ -11,7 +11,7 @@ class CreateLessonRequest extends BaseLessonRequest
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'order' => 'required|integer|min:0',
-            'is_published' => 'required|boolean',
+            'is_published' => 'nullable|boolean',
         ];
     }
 
@@ -21,7 +21,6 @@ class CreateLessonRequest extends BaseLessonRequest
             'chapter_id.required' => 'Chapter is required',
             'title.required' => 'Lesson title is required',
             'order.required' => 'Lesson order is required',
-            'is_published.required' => 'Publication status is required',
         ]);
     }
 }
