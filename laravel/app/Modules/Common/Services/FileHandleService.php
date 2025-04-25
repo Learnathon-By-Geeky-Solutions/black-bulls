@@ -5,6 +5,7 @@ namespace App\Modules\Common\Services;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use RuntimeException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class FileHandleService
 {
@@ -22,7 +23,7 @@ class FileHandleService
         $filePath = $file->store($path, $this->disk);
         
         if (!$filePath) {
-            throw new RuntimeException('Failed to store file');
+            throw new HttpException(500, 'Failed to store file');
         }
 
         return $this->getUrl($filePath);
