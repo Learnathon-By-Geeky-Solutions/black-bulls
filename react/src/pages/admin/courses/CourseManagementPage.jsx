@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { privateApi } from '../../../config/axios';
-import styles from './CourseManagement.module.css';
+import styles from '../styles/CourseItemListing.module.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const CourseManagementPage = () => {
@@ -45,7 +45,7 @@ const CourseManagementPage = () => {
     };
 
     return (
-        <div className={`container ${styles.courseManagement}`}>
+        <div className={`ItemsViewContainer ${styles.ItemsViewContainer}`}>
             <div className="d-flex justify-content-between align-items-center">
                 <h1 className="text-primary">The List of Courses</h1>
                 <button onClick={() => navigate('/admin/courses/create')} className="btn btn-success">Create New Course</button>
@@ -63,7 +63,7 @@ const CourseManagementPage = () => {
                         <tr key={course.id}>
                             <td scope="row">{index + 1}</td>
                             <td>{course.title}</td>
-                            <td className="text-end">
+                            <td>
                                 <button onClick={() => handleView(course.id)} className="btn btn-info btn-sm me-2">View</button>
                                 <button onClick={() => handleEdit(course.id)} className="btn btn-warning btn-sm me-2">Edit</button>
                                 <button onClick={() => handleDelete(course.id)} className="btn btn-danger btn-sm">Delete</button>
