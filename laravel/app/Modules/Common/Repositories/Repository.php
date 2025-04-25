@@ -6,6 +6,7 @@ use App\Modules\Common\Contracts\RepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
 class Repository implements RepositoryInterface
@@ -84,7 +85,7 @@ class Repository implements RepositoryInterface
         $existingIds = $this->model->whereIn('id', $ids)->pluck('id')->toArray();
 
         if (count($existingIds) !== count($ids)) {
-            throw new \Exception("Some records were not found for updating");
+            throw new ModelNotFoundException("Some records were not found for updating");
         }
     
         return $this->model->whereIn('id', $ids)->update($data);
@@ -102,7 +103,7 @@ class Repository implements RepositoryInterface
         $existingIds = $this->model->whereIn('id', $ids)->pluck('id')->toArray();
         
         if (count($existingIds) !== count($ids)) {
-            throw new \Exception("Some records were not found for deletion");
+            throw new ModelNotFoundException("Some records were not found for deletion");
         }
     
         return $this->model->destroy($ids);
