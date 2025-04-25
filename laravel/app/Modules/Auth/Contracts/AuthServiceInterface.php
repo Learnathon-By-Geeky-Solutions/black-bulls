@@ -9,4 +9,4 @@ interface AuthServiceInterface
     public function logout();
     public function refreshToken();
     public function formatTokenResponse($token);
-} 
+}
