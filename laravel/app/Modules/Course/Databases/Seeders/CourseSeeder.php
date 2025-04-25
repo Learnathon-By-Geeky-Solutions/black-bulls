@@ -59,4 +59,4 @@ class CourseSeeder extends Seeder
             Course::create($course);
         }
     }
-} 
+}
