@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import './AdminSidebar.css';
-import { FaBook, FaVideo, FaFileAlt, FaQuestionCircle, FaLayerGroup, FaListAlt, FaBars } from 'react-icons/fa';
+import { FaBook, FaVideo, FaQuestionCircle, FaLayerGroup, FaListAlt, FaBars } from 'react-icons/fa';
 import logo from '../../../assets/images/logo.png'; // Adjust the path to your logo image
 import PropTypes from 'prop-types';
 
@@ -12,7 +12,6 @@ const AdminSidebar = ({ isCollapsed }) => {
         { path: '/admin/chapters', label: 'Chapter Management', icon: <FaListAlt /> },
         { path: '/admin/lessons', label: 'Lesson Management', icon: <FaBars /> },
         { path: '/admin/videos', label: 'Video Management', icon: <FaVideo /> },
-        { path: '/admin/transcripts', label: 'Transcript Management', icon: <FaFileAlt /> },
         { path: '/admin/mcqs', label: 'MCQ Management', icon: <FaQuestionCircle /> },
     ];
 

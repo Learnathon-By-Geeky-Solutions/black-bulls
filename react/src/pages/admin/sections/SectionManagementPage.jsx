@@ -4,42 +4,42 @@ import { privateApi } from '../../../config/axios';
 import styles from '../styles/CourseItemListing.module.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const CourseManagementPage = () => {
-    const [courses, setCourses] = useState([]);
+const SectionManagementPage = () => {
+    const [sections, setSections] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
-        privateApi.get('/courses')
+        privateApi.get('/sections')
             .then(response => {
                 const { data } = response.data.data;
                 if (Array.isArray(data)) {
-                    setCourses(data);
+                    setSections(data);
                 } else {
-                    setCourses([]);
+                    setSections([]);
                 }
             })
             .catch(error => {
-                console.error('Error fetching courses:', error);
-                setCourses([]);
+                console.error('Error fetching sections:', error);
+                setSections([]);
             });
     }, []);
 
     const handleView = (id) => {
-        navigate(`/admin/courses/${id}`);
+        navigate(`/admin/sections/${id}`);
     };
 
     const handleEdit = (id) => {
-        navigate(`/admin/courses/${id}/edit`);
+        navigate(`/admin/sections/${id}/edit`);
     };
 
     const handleDelete = (id) => {
-        if (window.confirm('Are you sure you want to delete this course?')) {
-            privateApi.delete(`/courses/${id}`)
+        if (window.confirm('Are you sure you want to delete this section?')) {
+            privateApi.delete(`/sections/${id}`)
                 .then(() => {
-                    setCourses(courses.filter(course => course.id !== id));
+                    setSections(sections.filter(section => section.id !== id));
                 })
                 .catch(error => {
-                    console.error('Error deleting course:', error);
+                    console.error('Error deleting section:', error);
                 });
         }
     };
@@ -47,8 +47,8 @@ const CourseManagementPage = () => {
     return (
         <div className={`ItemsViewContainer ${styles.ItemsViewContainer}`}>
             <div className="d-flex justify-content-between align-items-center">
-                <h1 className="text-primary">The List of Courses</h1>
-                <button onClick={() => navigate('/admin/courses/create')} className="btn btn-success">Create New Course</button>
+                <h1 className="text-primary">The List of Sections</h1>
+                <button onClick={() => navigate('/admin/sections/create')} className="btn btn-success">Create New Section</button>
             </div>
             <table className="table table-striped table-hover">
                 <thead className="thead-dark">
@@ -59,14 +59,14 @@ const CourseManagementPage = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {courses.map((course, index) => (
-                        <tr key={course.id}>
+                    {sections.map((section, index) => (
+                        <tr key={section.id}>
                             <td scope="row">{index + 1}</td>
-                            <td>{course.title}</td>
+                            <td>{section.title}</td>
                             <td>
-                                <button onClick={() => handleView(course.id)} className="btn btn-info btn-sm me-2">View</button>
-                                <button onClick={() => handleEdit(course.id)} className="btn btn-warning btn-sm me-2">Edit</button>
-                                <button onClick={() => handleDelete(course.id)} className="btn btn-danger btn-sm">Delete</button>
+                                <button onClick={() => handleView(section.id)} className="btn btn-info btn-sm me-2">View</button>
+                                <button onClick={() => handleEdit(section.id)} className="btn btn-warning btn-sm me-2">Edit</button>
+                                <button onClick={() => handleDelete(section.id)} className="btn btn-danger btn-sm">Delete</button>
                             </td>
                         </tr>
                     ))}
@@ -76,4 +76,4 @@ const CourseManagementPage = () => {
     );
 };
 
-export default CourseManagementPage;
+export default SectionManagementPage;
