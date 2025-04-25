@@ -113,10 +113,10 @@ const McqForm = () => {
                     />
                 </div>
                 <div className={styles.formGroup}>
-                    <label>Options</label>
+                    <label htmlFor="option-label">Options</label>
                     {mcqData.options.map((option, index) => (
                         <input
-                            key={index}
+                            key={`option-${index}-${option}`}
                             type="text"
                             value={option}
                             onChange={(e) => handleOptionChange(index, e.target.value)}

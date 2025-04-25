@@ -167,15 +167,16 @@ const QuizTaker = ({ mcqs, lessonId }) => {
                 <h3>{currentQuestion.question}</h3>
                 <div className={styles.options}>
                     {currentQuestion.options.map((option, index) => (
-                        <div 
-                            key={index}
+                        <button
+                            type="button"
+                            key={`option-${index}-${option}`}
                             className={`${styles.option} ${
                                 selectedAnswers[currentQuestion.id] === option ? styles.selected : ''
                             }`}
                             onClick={() => handleAnswerSelect(currentQuestion.id, option)}
                         >
                             {option}
-                        </div>
+                        </button>
                     ))}
                 </div>
             </div>
@@ -199,6 +200,7 @@ QuizTaker.propTypes = {
     mcqs: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.number.isRequired,
         question: PropTypes.string.isRequired,
+        options: PropTypes.arrayOf(PropTypes.string).isRequired,
         correct_answer: PropTypes.string.isRequired,
         explanation: PropTypes.string
     })).isRequired,
