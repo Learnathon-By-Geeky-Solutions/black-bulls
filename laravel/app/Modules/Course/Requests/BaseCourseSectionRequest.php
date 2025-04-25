@@ -18,7 +18,7 @@ abstract class BaseCourseSectionRequest extends FormRequest
             'title' => 'string|max:255',
             'description' => 'string',
             'order' => 'integer|min:1',
-            'is_published' => 'boolean',
+            'is_published' => 'nullable|boolean',
         ];
     }
 
@@ -30,7 +30,6 @@ abstract class BaseCourseSectionRequest extends FormRequest
             'title.max' => 'Section title cannot exceed 255 characters',
             'order.integer' => 'Order must be a whole number',
             'order.min' => 'Order must be at least 1',
-            'is_published.boolean' => 'Publication status must be true or false',
         ];
     }
 }

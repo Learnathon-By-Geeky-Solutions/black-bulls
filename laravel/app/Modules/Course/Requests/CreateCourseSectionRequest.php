@@ -7,14 +7,18 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 
 class CreateCourseSectionRequest extends BaseCourseSectionRequest
 {
+    private const REQUIRED_RULE = 'required|';
+
     public function rules(): array
     {
         $commonRules = $this->getCommonRules();
-        
-        // Add required modifier to all rules
-        return array_map(function($rule) {
-            return 'required|' . $rule;
-        }, $commonRules);
+
+        // Add required modifier only for title, description, and order
+        return array_merge($commonRules, [
+            'title' => self::REQUIRED_RULE . ($commonRules['title'] ?? ''),
+            'description' => self::REQUIRED_RULE . ($commonRules['description'] ?? ''),
+            'order' => self::REQUIRED_RULE . ($commonRules['order'] ?? ''),
+        ]);
     }
 
     public function messages(): array
@@ -25,9 +29,7 @@ class CreateCourseSectionRequest extends BaseCourseSectionRequest
         return array_merge([
             'course_id.required' => 'Course is required',
             'title.required' => 'Section title is required',
-            'description.required' => 'Section description is required',
             'order.required' => 'Section order is required',
-            'is_published.required' => 'Publication status is required',
         ], $commonMessages);
     }
 

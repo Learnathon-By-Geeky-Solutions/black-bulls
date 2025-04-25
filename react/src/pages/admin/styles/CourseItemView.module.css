@@ -1,0 +1,66 @@
+.itemViewContainer {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 30px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+}
+
+.itemTitle {
+    font-size: 28px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.itemDescription {
+    font-size: 18px;
+    color: #34495e;
+    margin-bottom: 25px;
+    line-height: 1.6;
+    text-align: justify;
+}
+
+.itemDetails {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid #ddd;
+}
+
+.itemDetails li {
+    font-size: 16px;
+    color: #555;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+}
+
+.itemDetails li strong {
+    color: #2c3e50;
+}
+
+.itemDetails li:last-child {
+    border-bottom: none;
+}
+
+.itemDetails li span {
+    color: #7f8c8d;
+}
+
+.videoContainer {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.videoPlayer {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
