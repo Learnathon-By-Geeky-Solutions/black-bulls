@@ -18,7 +18,6 @@ import McqManagementPage from '../pages/admin/mcqs/McqManagementPage';
 import McqForm from '../pages/admin/mcqs/McqForm';
 import McqView from '../pages/admin/mcqs/McqView';
 import PropTypes from 'prop-types';
-import './UnauthorizedAccess.css'; // Importing styles for Unauthorized Access
 import AuthorizationWrapper from '../components/admin/rbac/AuthorizationWrapper';
 
 const ProtectedRoute = ({ children }) => {

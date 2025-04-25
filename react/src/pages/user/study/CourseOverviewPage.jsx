@@ -41,6 +41,7 @@ const CourseOverviewPage = () => {
                     setError(courseResponse.message || sectionsResponse.message);
                 }
             } catch (err) {
+                console.error('Error fetching course data:', err);
                 setError(t('error.fetch_course'));
             } finally {
                 setLoading(false);
@@ -65,7 +66,8 @@ const CourseOverviewPage = () => {
                 setError(response.message);
             }
         } catch (err) {
-            setError(t('error.fetch_sections'));
+            console.error('Error fetching sections:', err);
+            setError(t('error.fetch_sections') || 'An unexpected error occurred.');
         } finally {
             setLoading(false);
         }

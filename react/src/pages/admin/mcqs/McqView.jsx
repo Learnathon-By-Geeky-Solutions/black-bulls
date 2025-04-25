@@ -35,8 +35,8 @@ const McqView = () => {
             <ul className={styles.itemDetails}>
                 <li><strong>Options:</strong>
                     <ul>
-                        {mcq.options.map((option, index) => (
-                            <li key={index}>{option}</li>
+                        {mcq.options.map((option) => (
+                            <li key={option}>{option}</li>
                         ))}
                     </ul>
                 </li>
