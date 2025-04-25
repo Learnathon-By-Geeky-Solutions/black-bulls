@@ -28,7 +28,7 @@ class ProfileService
         try {
             $userId = Auth::id();
             $user = $this->repository->getById($userId);
-            $user->load('userDetails');
+            $user->load('userDetails','roles');
             
             return [
                 'is_success' => true,
