@@ -97,7 +97,12 @@ export const useProfile = () => {
             setIsLoading(true);
             setError(null);
 
-            const response = await privateApi.put('/profile/password', data);
+            const response = await privateApi.put('/profile/password', data, {
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+              });
+              
 
             if (response.data.is_success) {
                 return {
