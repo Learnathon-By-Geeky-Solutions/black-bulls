@@ -1,0 +1,37 @@
+{
+  "platform": {
+    "name": "উস্তাদ"
+  },
+  "nav": {
+    "courses": "কোর্সসমূহ",
+    "specializations": "বিশেষায়িত কোর্স",
+    "degrees": "ডিগ্রি",
+    "profile": "প্রোফাইল",
+    "myLearning": "আমার শিখন",
+    "logout": "লগআউট",
+    "myCourses": "আমার কোর্সসমূহ"
+  },
+  "auth": {
+    "login": "লগইন",
+    "signup": "সাইন আপ"
+  },
+  "search": {
+    "placeholder": "আপনি কি শিখতে চান?"
+  },
+  "footer": {
+    "about": "সম্পর্কে",
+    "aboutUs": "আমাদের সম্পর্কে",
+    "careers": "ক্যারিয়ার",
+    "press": "প্রেস",
+    "resources": "রিসোর্স",
+    "blog": "ব্লগ",
+    "help": "সহায়তা",
+    "mobile": "মোবাইল",
+    "legal": "আইনি",
+    "terms": "শর্তাবলী",
+    "privacy": "গোপনীয়তা",
+    "cookies": "কুকি",
+    "connect": "সংযোগ",
+    "copyright": "সকল অধিকার সংরক্ষিত"
+  }
+} 

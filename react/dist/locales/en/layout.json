@@ -1,0 +1,37 @@
+{
+  "platform": {
+    "name": "Ustad"
+  },
+  "nav": {
+    "courses": "Courses",
+    "specializations": "Specializations",
+    "degrees": "Degrees",
+    "profile": "Profile",
+    "myLearning": "My Learning",
+    "logout": "Logout",
+    "myCourses": "My Courses"
+  },
+  "auth": {
+    "login": "Log In",
+    "signup": "Sign Up"
+  },
+  "search": {
+    "placeholder": "What do you want to learn?"
+  },
+  "footer": {
+    "about": "About",
+    "aboutUs": "About Us",
+    "careers": "Careers",
+    "press": "Press",
+    "resources": "Resources",
+    "blog": "Blog",
+    "help": "Help",
+    "mobile": "Mobile",
+    "legal": "Legal",
+    "terms": "Terms",
+    "privacy": "Privacy",
+    "cookies": "Cookies",
+    "connect": "Connect",
+    "copyright": "All rights reserved."
+  }
+} 

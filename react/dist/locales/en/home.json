@@ -1,0 +1,27 @@
+{
+  "hero": {
+    "title": "Learn Without Limits",
+    "subtitle": "Start, switch, or advance your career with our courses, certificates, and degrees.",
+    "getStarted": "Get Started"
+  },
+  "freeCourses": {
+    "title": "Free Courses",
+    "subtitle": "Start learning with our selection of free courses",
+    "viewAll": "View All Free Courses"
+  },
+  "categories": {
+    "title": "Explore Categories",
+    "subtitle": "Browse through our wide range of course categories",
+    "viewAll": "View All Categories"
+  },
+  "popularCourses": {
+    "title": "Most Popular Courses",
+    "subtitle": "Join thousands of learners in our most popular courses",
+    "viewAll": "View All Popular Courses"
+  },
+  "trendingCourses": {
+    "title": "Trending Now",
+    "subtitle": "Discover what's hot in learning right now",
+    "viewAll": "View All Trending Courses"
+  }
+} 
