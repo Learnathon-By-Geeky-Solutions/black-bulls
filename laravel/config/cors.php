@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['http://localhost:3000', 'https://sandbox.sslcommerz.com'],
+    'allowed_origins' => ['*'], // Todo: Need to be changed to the actual domain in production from .env file
 
     'allowed_origins_patterns' => [],
 
