@@ -25,10 +25,7 @@ User profiles with detailed information, bio, and badges/achievements.
     -Adding chapters, lessons, and MCQs.
     -Adding lesson related tutorial(text-based)
     -Price settings.
-    -Managing live sessions and discussion forums.
     -Support for multiple categories and tags for better course discovery.
-    -Integration of discounts and coupons.
-    -Ratings and reviews for courses.
 ## 3. Learning Features
 Video lessons with interactive capabilities (pause, rewind, playback speed).
 Chapter and lesson structure for courses.
@@ -62,8 +59,6 @@ Bootstrap or Tailwind CSS
 Laravel 
 3. Database
 MySQL 
-4. AI Tools
-Llama 2 (by Meta) or LangChain.
 
 
 # Future Enhancements
