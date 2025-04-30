@@ -4,14 +4,13 @@ import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import { clearUser } from '../../../../redux/slices/userSlice';
 import LanguageSwitcher from "../../../common/LanguageSwitcher/LanguageSwitcher";
-import SearchIcon from "../../../common/icons/SearchIcon";
 import styles from './Header.module.css';
 
 const Header = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [setIsMenuOpen] = useState(false);
   const user = useSelector((state) => state.user.user);
 
   const handleLogout = () => {
@@ -27,38 +26,9 @@ const Header = () => {
           <Link to="/" className={styles.logo}>
             {t('platform.name')}
           </Link>
-          <nav className={`${styles.nav} ${isMenuOpen ? styles.active : ''}`}>
-            <ul>
-              <li>
-                <Link to="/courses" onClick={() => setIsMenuOpen(false)}>
-                  {t('nav.courses')}
-                </Link>
-              </li>
-              <li>
-                <Link to="/specializations" onClick={() => setIsMenuOpen(false)}>
-                  {t('nav.specializations')}
-                </Link>
-              </li>
-              <li>
-                <Link to="/degrees" onClick={() => setIsMenuOpen(false)}>
-                  {t('nav.degrees')}
-                </Link>
-              </li>
-            </ul>
-          </nav>
         </div>
 
         <div className={styles.right}>
-          <div className={styles.search}>
-            <input 
-              type="text" 
-              placeholder={t('search.placeholder')}
-              className={styles.searchInput}
-            />
-            <button className={styles.searchButton}>
-              <SearchIcon />
-            </button>
-          </div>
 
           <LanguageSwitcher />
 
